@@ -1,0 +1,237 @@
+:root {
+	--frame-dark: #1a1a1a;
+	--panel-white: #ffffff;
+	--nav-grey: #d9d9d9;
+	--nav-active: #4a8f5e;
+	--btn-orange: #ff7700;
+	--table-grey: #e8e8e8;
+	--text-dark: #222222;
+}
+
+* { box-sizing: border-box; }
+
+body {
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, sans-serif;
+	background: var(--frame-dark);
+	color: var(--text-dark);
+}
+
+.frame {
+	padding: 12px;
+}
+
+.app-shell {
+	max-width: 1280px;
+	margin: 20px auto;
+	background: var(--panel-white);
+	border-radius: 6px;
+	padding: 28px 32px;
+	box-shadow: 0 0 0 12px rgba(0, 0, 0, 0.8);
+}
+
+/* Header */
+.header {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	margin-bottom: 24px;
+}
+
+.header-left {
+	display: flex;
+	align-items: center;
+	gap: 16px;
+}
+
+.logo {
+	width: 56px;
+	height: 56px;
+	border-radius: 50%;
+	background: linear-gradient(135deg, #5ba878, #3d7d5a);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: 32px;
+	flex-shrink: 0;
+}
+
+.titles {
+	display: flex;
+	flex-direction: column;
+}
+
+.h-title {
+	margin: 0;
+	font-size: 26px;
+	font-weight: 700;
+	line-height: 1.15;
+	color: var(--text-dark);
+}
+
+.logout {
+	background: var(--btn-orange);
+	color: #fff;
+	border: none;
+	padding: 8px 14px;
+	border-radius: 20px;
+	cursor: pointer;
+	font-weight: 600;
+	font-size: 14px;
+}
+
+/* Main layout */
+.main {
+	display: flex;
+	gap: 24px;
+}
+
+.sidebar {
+	width: 280px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.back-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 8px;
+	padding: 10px 12px;
+	border-radius: 24px;
+	border: 2px solid var(--text-dark);
+	background: white;
+	color: var(--text-dark);
+	font-size: 16px;
+	cursor: pointer;
+	width: fit-content;
+	font-weight: 600;
+}
+
+.side-nav {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	background: var(--nav-grey);
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.nav-item {
+	display: block;
+	padding: 20px 18px;
+	background: var(--nav-grey);
+	color: var(--text-dark);
+	text-decoration: none;
+	font-size: 18px;
+	border: none;
+	cursor: pointer;
+	text-align: center;
+	border-bottom: 1px solid #ccc;
+	transition: all 0.2s;
+}
+
+.nav-item:last-child {
+	border-bottom: none;
+}
+
+.nav-item.active {
+	background: var(--nav-active);
+	color: white;
+	font-weight: 600;
+}
+
+/* Content & Table */
+.content {
+	flex: 1;
+	display: flex;
+	align-items: flex-start;
+	justify-content: center;
+}
+
+.table-card {
+	width: 100%;
+	background: var(--table-grey);
+	padding: 24px;
+	border-radius: 4px;
+	border: 1px solid #d0d0d0;
+	overflow-x: auto;
+}
+
+.dogs-table {
+	width: 100%;
+	border-collapse: collapse;
+	font-size: 16px;
+}
+
+.dogs-table thead {
+	background: #c0c0c0;
+}
+
+.dogs-table th {
+	padding: 14px 12px;
+	text-align: left;
+	font-weight: 600;
+	color: var(--text-dark);
+	border: 1px solid #b8b8b8;
+}
+
+.dogs-table td {
+	padding: 16px 12px;
+	background: #e8e8e8;
+	border: 1px solid #d8d8d8;
+	color: var(--text-dark);
+}
+
+.dogs-table tbody tr {
+	transition: all 0.2s;
+}
+
+.img-placeholder {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 36px;
+	height: 36px;
+	border: 2px dashed #999;
+	border-radius: 4px;
+	font-size: 18px;
+	cursor: pointer;
+}
+
+/* Hover states - turn green */
+.nav-item:hover { 
+	background: var(--nav-active); 
+	color: white;
+}
+.nav-item.active:hover { 
+	background: var(--nav-active); 
+}
+.back-btn:hover { 
+	border-color: var(--nav-active); 
+	color: var(--nav-active); 
+	background: #f0f8f5;
+}
+.logout:hover { 
+	background: var(--nav-active); 
+}
+.dogs-table tbody tr:hover {
+	background: var(--nav-active);
+	color: white;
+}
+.dogs-table tbody tr:hover td {
+	background: var(--nav-active);
+	color: white;
+}
+.img-placeholder:hover {
+	border-color: var(--nav-active);
+	color: var(--nav-active);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+	.main { flex-direction: column; }
+	.sidebar { width: 100%; flex-direction: row; gap: 8px; overflow-x: auto; }
+	.side-nav { flex-direction: row; }
+	.nav-item { flex: 1; white-space: nowrap; padding: 12px; }
+}

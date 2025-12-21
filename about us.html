@@ -1,0 +1,151 @@
+<!-- Save as: C:\Users\lenevo\Desktop\ResuceTails\HTML\about us.html -->
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>RescueTails — About Us</title>
+    <link rel="stylesheet" href="about us.css" />
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="#">
+                <!-- simple SVG logo -->
+                <svg width="44" height="44" viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="12" cy="12" r="11" fill="#2f9e44"></circle>
+                    <path d="M8 9c-1.1 0-2 .9-2 2 0 .7.4 1.3 1 1.7C7 13.6 7 14 7 14s1 .6 2 0c.9-.5 1-1.3 1-2 0-1.1-.9-2-2-2zm8 0c-1.1 0-2 .9-2 2 0 .7.4 1.3 1 1.7 0 .6 0 1 0 1s1 .6 2 0c.9-.5 1-1.3 1-2 0-1.1-.9-2-2-2zM12 5a2 2 0 00-2 2c0 .9.5 1.6 1 2 0 0 .5.5 1 0 .5.5 1 0 1 0 .5-.4 1-1.1 1-2a2 2 0 00-2-2z" fill="#fff"/>
+                </svg>
+                <span class="brand-text">RescueTails</span>
+            </a>
+
+            <nav class="main-nav">
+                <a href="landingpage.html">Home</a>
+                <a href="Gallery.html">Gallery</a>
+                <a class="active" href="#">About Us</a>
+                <a href="ContactUs.html">Contact US</a>
+            </nav>
+
+            <div class="login-btn">
+                <a href="login.html">
+                    <button>Login</button>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero">
+            <div class="container">
+                <h1>Saving Lives, One Paw at a Time</h1>
+                <p>
+                    We're a dedicated team of animal lovers committed to rescuing street dogs and connecting them with loving families who will give them the forever homes they deserve.
+                </p>
+            </div>
+        </section>
+
+        <!-- Stats -->
+        <section class="stats">
+            <div class="container stats-grid">
+                <div class="stat">
+                    <div class="icon">🐶</div>
+                    <div class="num">2,500+</div>
+                    <div class="label">Dogs Rescued</div>
+                </div>
+                <div class="stat">
+                    <div class="icon">🏡</div>
+                    <div class="num">1,800+</div>
+                    <div class="label">Successful Adoptions</div>
+                </div>
+                <div class="stat">
+                    <div class="icon">🤝</div>
+                    <div class="num">150+</div>
+                    <div class="label">Active Volunteers</div>
+                </div>
+                <div class="stat">
+                    <div class="icon">⭐</div>
+                    <div class="num">5</div>
+                    <div class="label">Years of Service</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Mission -->
+        <section class="mission">
+            <div class="container mission-grid">
+                <div class="mission-card">
+                    <span class="pill">Our Mission</span>
+                    <h2>Creating a World Where Every Dog Has a Home</h2>
+                    <p>
+                        Founded in 2016, RescueTails emerged from a simple belief: every street dog deserves a chance at a better life. What started as a small group of volunteers has grown into a comprehensive rescue organization that has transformed the lives of thousands of dogs and families.
+                    </p>
+                    <p>
+                        We work tirelessly to rescue abandoned and stray dogs from the streets, provide medical care, rehabilitation, and rehoming services—helping them find loving forever homes where they can thrive.
+                    </p>
+                    <a class="btn primary" href="#">Learn more about our work</a>
+                </div>
+
+                <div class="mission-image">
+                    <!-- Replace with actual image at images/rottweiler.jpg -->
+                    <img src="images/dog.jpg" alt="Happy rescued dog" />
+                </div>
+            </div>
+        </section>
+
+        <!-- Values -->
+        <section class="values">
+            <div class="container">
+                <div class="values-header">
+                    <span class="pill light">Our Values</span>
+                    <h3>What Drives Our Mission</h3>
+                    <p>Our core values guide every decision we make and every action we take in our mission to help street dogs find their forever homes.</p>
+                </div>
+
+                <div class="values-grid">
+                    <div class="value-card">
+                        <div class="v-icon">🤝</div>
+                        <h4>Community Driven</h4>
+                        <p>Building strong partnerships with volunteers, adopters, and local organizations to increase impact.</p>
+                    </div>
+
+                    <div class="value-card">
+                        <div class="v-icon">🏆</div>
+                        <h4>Excellence</h4>
+                        <p>Committed to the highest standards in animal care and adoption services.</p>
+                    </div>
+
+                    <div class="value-card">
+                        <div class="v-icon">🛡️</div>
+                        <h4>Safety First</h4>
+                        <p>Ensuring the health and safety of both our rescue dogs and potential families.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CTA -->
+        <section class="cta">
+            <div class="container cta-inner">
+                <h4>Join Our Mission to Save More Lives</h4>
+                <p>Whether you're looking to adopt, volunteer, or simply support our cause, there are many ways you can help save the lives of dogs in need.</p>
+                <div class="cta-actions">
+                    <a class="btn accent" href="#">Get Involved</a>
+                    <a class="btn ghost" href="Donation.html">Make a Donation</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="container">
+            <p>© <span id="year"></span> RescueTails. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // small helper
+        document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>

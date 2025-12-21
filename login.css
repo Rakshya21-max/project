@@ -1,0 +1,217 @@
+ body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f8f8f8;
+    }
+.logo-circle
+{
+  width:64px;height:64px;border-radius:50%;background:#eaf8ef;display:flex;align-items:center;justify-content:center;font-size:26px}
+
+.error{
+  color: red;
+}
+    .container {
+      display: flex;
+      height: 100vh;
+    }
+
+    /* Left Panel */
+    .left {
+      background: #f2f2f2;
+      width: 50%;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .logo {
+      width: 80px;
+      margin-bottom: 15px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    p.subtitle {
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 25px;
+    }
+
+    .tabs {
+      display: flex;
+      width: 250px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .tabs button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      background: #ddd;
+    }
+
+    .tabs button.login {
+      background: white;
+      border-bottom: 2px solid #FF5900;
+      color: FF5900;
+    }
+    /* .tabs button.ngo-btn {
+      background: white;
+      border-bottom: 2px solid #FF5900;
+      color: FF5900;
+    } */
+    
+
+    .grp {
+      width: 100%;
+      margin: 10px 0;
+      text-align: left;
+    }
+
+    .grp label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .grp input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .option {
+      display:flex;
+      justify-content: space-between;
+      align-items:center;
+      margin: 10px 0;
+      font-size: 13px;
+    }
+
+    .option a {
+      color: #FF5900;
+      text-decoration: none;
+    }
+
+    .login2 {
+      width: 100%;
+      background: #FF5900;
+      border: none;
+      padding: 12px;
+      color: white;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 15px;
+    }
+
+    .footer{
+      font-size: 14px;
+      color: #777;
+      margin-top: 15px;
+    }
+
+    /* Right Panel */
+    .right {
+      width: 50%;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .right h2 {
+      margin: 0;
+      font-size: 22px;
+      margin-bottom: 25px;
+    }
+
+    /* .right p {
+      font-size: 20px;
+      color: #636262;
+      margin-bottom: 25px;
+    } */
+.tabs-btn {
+    padding: 10px 28px;
+    background: var(--accent-orange);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/* .ngo-btn.tabs:hover {
+    background: #e86a00;
+    cursor: pointer;
+}
+.ngo-btn {
+    padding: 10px 28px;
+    background: var(--accent-orange);
+    color: white;
+    border: none;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 600;
+  
+    text-decoration: none;
+} */
+.access-btn {
+	padding: 10px 28px;
+	background: var(--accent-orange);
+	color: white;
+	border: none;
+	border-radius: 20px;
+	font-size: 14px;
+	font-weight: 600;
+	cursor: pointer;
+	transition: all 0.2s;
+}
+
+.access-btn:hover,
+.access-btn:focus {
+	background: var(--accent-green);
+	transform: translateY(-1px);
+	box-shadow: 0 2px 8px rgba(74, 143, 94, 0.3);
+}
+
+
+
+
+
+    /* .tabs {
+      display: flex;
+      width: 250px;
+      margin: 20px 0;
+    } */
+
+    /* .tabs button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      background: #ddd;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .tabs button.login {
+      background: white;
+      border-bottom: 2px solid #FF5900;
+      color: #FF5900;
+    } */

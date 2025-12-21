@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign-Up page</title>
+    <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+     <div class="container">
+
+        <div class="left">
+            <h2>Welcome to RescueTails</h2>
+            <h2>Help find a forever home for pets</h2>
+
+            <div class="tabs">
+                <a href="login.html">
+                    <button class="login">Login</button>
+                </a>
+                <button class="signin">Sign Up</button>
+            </div>
+        </div>
+
+        <div class="right">
+            <h2>Welcome to RescueTails</h2>
+            <p class="subtitle">Help find a forever home for pets</p>
+
+            <div class="tabs">
+                <a href="login.html">
+                    <button class="login">Login</button>
+                </a>
+                <button class="signin">Sign Up</button>
+            </div>
+
+            <!-- ⭐ FORM STARTS HERE -->
+            <form id="signupForm" action="signup_user.php" method="POST">
+
+    <div class="grp">
+        <div class="name">
+            <div class="name1">
+                <label>First Name</label>
+                <input type="text" id="first" name="first" placeholder="First Name">
+                <span class="error" id="err_first"></span>
+            </div>
+
+            <div class="name1">
+                <label>Last Name</label>
+                <input type="text" id="last" name="last" placeholder="Last Name">
+                <span class="error" id="err_last"></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="grp">
+        <label>Email Address</label>
+        <input type="email" id="email" name="email" placeholder="Enter your email">
+        <span class="error" id="err_email"></span>
+    </div>
+
+    <div class="grp">
+        <label>Phone Number</label>
+        <input type="number" id="phone" name="phone" placeholder="Enter your phone number">
+        <span class="error" id="err_phone"></span>
+    </div>
+
+    <div class="grp">
+        <label>Password</label>
+        <input type="password" id="password" name="password" placeholder="Enter your password">
+        <span class="error" id="err_password"></span>
+    </div>
+
+    <div class="grp">
+        <label>Confirm Password</label>
+        <input type="password" id="confirm_password" name="confirm_password" placeholder="Confirm your password">
+        <span class="error" id="err_confirm_password"></span>
+    </div>
+
+    <div class="option">
+        <label>
+            <input type="checkbox"> I agree to the 
+            <a href="">Terms of Service</a> and 
+            <a href="">Privacy Policy</a>.
+        </label>
+    </div>
+
+    <button type="submit" class="Create">Create Account</button>
+
+</form>
+
+            <!-- ⭐ FORM ENDS HERE -->
+
+            <p class="footer">Helping street dogs find loving homes</p>
+        </div>
+     </div>
+
+     <script src="signup.js"></script>
+</body>
+</html>

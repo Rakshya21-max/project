@@ -1,0 +1,156 @@
+ body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #f8f8f8;
+    }
+  .error{
+    color: red;
+    font-size: 12px;
+    margin-top: 5px;
+  }
+
+    .container {
+      display: flex;
+      height: 100vh;
+    }
+    .left{
+      width: 50%;
+      background: white;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .left h2 {
+      margin: 0;
+      font-size: 22px;
+      margin-bottom: 25px;
+    }
+     .tabs button.signin {
+      background: white;
+      border-bottom: 2px solid #FF5900;
+      color:#FF5900;
+
+    }
+     .tabs {
+      display: flex;
+      width: 250px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      overflow: hidden;
+    }
+
+    .tabs button {
+      flex: 1;
+      padding: 10px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+      background: #ddd;
+    }
+
+        .right {
+      background: #f2f2f2;
+      width: 50%;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    .logo {
+      width: 80px;
+      margin-bottom: 15px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    p.subtitle {
+      font-size: 14px;
+      color: #777;
+      margin-bottom: 25px;
+    }
+    .grp {
+      width: 100%;
+      margin: 10px 0;
+      text-align: left;
+    }
+    .name{
+      display: flex;
+       flex-direction: column;
+       justify-content: center;
+    }
+
+    .grp label {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .grp input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    .option {
+      display:flex;
+      justify-content: space-between;
+      align-items:center;
+      margin: 10px 0;
+      font-size: 13px;
+    }
+
+    .option a {
+      color: #FF5900;
+      text-decoration: none;
+    }
+     .Create {
+      background:#FF5900;
+      color: white;
+      border: none;
+      padding: 12px 25px;
+      border-radius: 7px;
+      font-size: 15px;
+      cursor: pointer;
+      box-shadow: 0 3px 5px rgba(0,0,0,0.2);
+       width:300px;
+     }
+    .footer{
+      font-size: 14px;
+      color:#777;
+      margin-top: 15px;
+    }
+    .name.fname{
+  flex: 1; /* both take equal width */
+}
+/* Container for First + Last name */
+.name {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px; /* space between fields */
+  margin: 10px 0;
+  width: 100%;
+}
+
+.name.name1 {
+  flex: 1; /* both take equal width */
+}
+
+
+.name input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+}

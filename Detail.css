@@ -1,0 +1,49 @@
+/* Detail.css - styles for Detail.html */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,Arial;
+  background:#f5f7fa;
+  -webkit-font-smoothing:antialiased;
+}
+.page{
+  min-height:100vh;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding:36px 20px;
+}
+.detail-card{
+  position:relative;
+  width:420px;
+  max-width:94vw;
+  background:#f7d84a;
+  border-radius:8px;
+  padding:28px 32px 44px 32px;
+  box-shadow:0 12px 30px rgba(10,10,10,0.12);
+}
+.back{position:absolute;left:12px;top:12px;border:0;background:transparent;font-size:20px;cursor:pointer}
+.card-header{display:flex;flex-direction:column;align-items:center;gap:8px}
+.logo{width:52px;height:52px;border-radius:50%;background:#2eaf6e;display:flex;align-items:center;justify-content:center;color:#fff;font-size:20px;box-shadow:0 6px 12px rgba(46,175,110,0.18)}
+.title h1{margin:0;font-size:28px;font-weight:700}
+.subtitle{margin:6px 0 0 0;color:#333;opacity:0.9;font-size:13px}
+
+.photo-wrap{display:flex;flex-direction:column;align-items:center;margin-top:18px}
+.pet-photo{width:120px;height:120px;border-radius:20px;object-fit:cover;box-shadow:0 6px 18px rgba(0,0,0,0.18)}
+.pet-name{margin:14px 0 6px 0;font-size:20px;font-weight:700}
+
+.details{display:flex;gap:30px;padding-top:8px}
+.col{flex:1}
+.field{margin-bottom:22px}
+.label{display:block;color:rgba(0,0,0,0.45);font-weight:600;margin-bottom:6px}
+.value{display:block;color:#111;font-weight:700}
+
+.action{display:flex;justify-content:center;margin-top:26px}
+.start{background:#ff6a00;border:0;color:white;padding:10px 20px;border-radius:8px;font-weight:600;box-shadow:0 8px 20px rgba(255,106,0,0.18);cursor:pointer}
+
+@media (max-width:520px){
+  .detail-card{width:92vw;padding:22px}
+  .details{flex-direction:column;gap:8px}
+  .pet-photo{width:100px;height:100px}
+}

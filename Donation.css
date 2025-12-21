@@ -1,0 +1,67 @@
+/* Donation.css - styles for Donation.html */
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0;
+  font-family:'Poppins',system-ui,-apple-system,'Segoe UI',Roboto,Arial;
+  background:#f5f7fa;
+  -webkit-font-smoothing:antialiased;
+}
+.page{
+  min-height:100vh;
+  display:flex;
+  align-items:flex-start;
+  justify-content:center;
+  padding:36px 20px;
+}
+.donation-card{
+  position:relative;
+  width:95%;
+  max-width:1100px;
+  background:#f7d84a;
+  border-radius:8px;
+  padding:36px 64px 48px 64px;
+  box-shadow:0 18px 30px rgba(10,10,10,0.12);
+}
+.back{
+  position:absolute;
+  left:18px;
+  top:18px;
+  border:0;
+  background:transparent;
+  font-size:20px;
+  cursor:pointer;
+}
+.card-top{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:12px;
+}
+.logo{
+  width:56px;height:56px;border-radius:50%;background:#2eaf6e;display:flex;align-items:center;justify-content:center;color:#fff;font-size:22px;box-shadow:0 6px 12px rgba(46,175,110,0.18);
+}
+.titles h1{margin:0;font-size:40px;font-weight:700}
+.subtitle{margin:6px 0 0 0;color:#333;opacity:0.9}
+
+.donation-form{max-width:760px;margin:28px auto 0}
+.two-cols{display:flex;gap:20px}
+.field{display:flex;flex-direction:column;margin-bottom:18px}
+.field.full{width:100%}
+.field input{padding:12px 16px;border-radius:10px;border:1px solid rgba(0,0,0,0.12);background:transparent;font-size:15px}
+.lbl{font-size:13px;color:rgba(0,0,0,0.6);margin-bottom:8px}
+.small{font-size:14px;margin-top:6px}
+
+.payments{display:flex;justify-content:space-between;align-items:center;gap:24px;padding:18px 18px 8px 18px}
+.payments img{height:44px;object-fit:contain}
+
+.submit-wrap{display:flex;justify-content:center;margin-top:18px}
+.donate{background:#ff6a00;border:0;color:white;padding:12px 48px;border-radius:20px;font-weight:600;box-shadow:0 8px 18px rgba(255,106,0,0.18);cursor:pointer}
+
+@media (max-width:820px){
+  .donation-card{padding:28px 24px}
+  .titles h1{font-size:28px}
+  .donation-form{max-width:100%}
+  .two-cols{flex-direction:column}
+  .payments{justify-content:flex-start}
+}

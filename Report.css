@@ -1,0 +1,48 @@
+:root{
+  --yellow:#f6d75e;
+  --accent:#f15a00;
+  --muted:#4b4b4b;
+  --card-radius:10px;
+  --shadow:0 12px 28px rgba(0,0,0,0.12);
+  font-size:16px;
+}
+*{box-sizing:border-box}
+html,body{height:100%;margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial;background:#fff}
+.page{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:40px}
+
+.report-container{width:100%;max-width:980px;background:var(--yellow);border-radius:10px;padding:56px 80px;box-shadow:var(--shadow);position:relative}
+.back-btn{position:absolute;left:22px;top:18px;font-size:22px;color:#111;text-decoration:none}
+.report-container .logo{width:56px;height:56px;border-radius:50%;background:linear-gradient(180deg,#fff,#ffe);display:flex;align-items:center;justify-content:center;margin:0 auto 12px;font-size:24px}
+.report-container h1{font-family:Montserrat,Arial;font-size:36px;text-align:center;margin:6px 0}
+.report-container .lead{text-align:center;color:var(--muted);margin-bottom:26px}
+
+.report-form{max-width:720px;margin:0 auto}
+.field{display:block;margin-bottom:18px}
+.label-text{font-size:14px;color:#222;margin-bottom:8px}
+.input-inline{display:flex;align-items:center;gap:10px}
+.input-inline input[type="file"]{flex:1;padding:12px 14px;border-radius:8px;border:1px solid rgba(0,0,0,0.12);background:transparent}
+.input-inline input[type="text"],.report-form input[type="email"]{flex:1;padding:12px 14px;border-radius:8px;border:1px solid rgba(0,0,0,0.12)}
+.report-form textarea{width:100%;min-height:72px;padding:12px 14px;border-radius:8px;border:1px solid rgba(0,0,0,0.12);resize:vertical}
+.btn-icon{background:transparent;border:1px solid rgba(0,0,0,0.12);padding:8px 12px;border-radius:8px;cursor:pointer}
+
+.submit-row{margin-top:18px;text-align:center}
+.btn{display:inline-block;padding:12px 18px;border-radius:8px;border:0;font-weight:700;cursor:pointer}
+.submit-btn{background:var(--accent);color:#fff;padding:12px 26px;border-radius:8px}
+.btn.wide{width:80%;max-width:420px}
+
+/* small screens */
+@media(max-width:800px){
+  .report-container{padding:36px 22px;border-radius:8px}
+  .report-container h1{font-size:28px}
+  .report-container .logo{width:48px;height:48px}
+  .input-inline{flex-direction:column;align-items:stretch}
+  .btn.wide{width:100%}
+}
+.field input[type="file"],
+.field input[type="text"],
+.field input[type="email"]{
+  width:100%;
+  padding:12px 14px;
+  border-radius:8px;
+  border:1px solid rgba(0,0,0,0.12);
+}
