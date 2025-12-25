@@ -39,6 +39,6 @@ if (!password_verify($password, $user['password'])) {
 $_SESSION['user_id'] = $user['user_id'];
 $_SESSION['user_email'] = $user['email'];
 
-header("Location: /project/RescueTails/html2/Landingpage.html");
+header("Location: landingafter.php");
 exit;
 ?>
