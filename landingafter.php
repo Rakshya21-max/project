@@ -41,8 +41,8 @@ $user['profile_photo'] = null; // Placeholder until column is added
 				<nav class="main-nav">
 					<a class="nav-link active" href="#">Home</a>
 					<a class="nav-link" href="Galleryafter.php">Gallery</a>
-					<a class="nav-link" href="aboutusafter.html">About Us</a>
-					<a class="nav-link" href="ContactUsafter.html">Contact US</a>
+					<a class="nav-link" href="aboutusafter.php">About Us</a>
+					<a class="nav-link" href="ContactUsafter.php">Contact US</a>
 				</nav>
 				<div class="nav-actions profile-wrapper">
 	<div class="profile-icon" onclick="toggleDropdown()">
@@ -73,13 +73,10 @@ $user['profile_photo'] = null; // Placeholder until column is added
 					</div>
 
 					<div class="hero-right">
-								<div class="top-images">
-									<div class="img-box img-small" aria-label="image placeholder"></div>
-									<div class="img-box img-small" aria-label="image placeholder"></div>
-								</div>
+								
 
 								<div class="hero-circle">
-									<img src="photos/1.jpg" alt="photo">
+									<img src="1.jpg" alt="photo">
 									<div class="img-box img-circle" aria-label="image placeholder" ></div>
 								</div>
 					</div>
@@ -223,7 +220,7 @@ $user['profile_photo'] = null; // Placeholder until column is added
 					</div>
 				</div>
 			</div>
-			<div class="site-copy">© 2024 Street Dog Adoption Services. All rights reserved.</div>
+			<div class="site-copy">© 2026 Street Dog Adoption Services. All rights reserved.</div>
 		</footer>
 		
 		<script>

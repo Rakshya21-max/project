@@ -99,10 +99,15 @@
 
     .one, .two {
       display: block;
+      margin: 5px 0;
+    
+    }
+    .one{
+      font-size: 15px;
     }
 
     .two {
-      margin-top: 50px !important; /* Add vertical distance */
+      margin-top: 15px !important; /* Add vertical distance */
       color: red; /* Test if CSS is applying */
     }
 
