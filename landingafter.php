@@ -113,7 +113,7 @@ $user['profile_photo'] = null; // Placeholder until column is added
 						<li>★ Voice for strays</li>
 						<li>★ Hope for paws</li>
 					</ul>
-					<a href="Donation.html">
+					<a href="Donationafter.php">
 					<button class="btn primary">Donate</button>
 					</a>
 				</aside>
@@ -180,7 +180,7 @@ $user['profile_photo'] = null; // Placeholder until column is added
 						</div>
 					</div>
 				<div class="view-all">
-					<a href="Gallery.html">
+					<a href="galleryafter.php">
 					<button class="btn outline">View all dogs →</button>
 					</a>
 				</div>
@@ -191,7 +191,7 @@ $user['profile_photo'] = null; // Placeholder until column is added
 				<div class="cta-left">
 					<h3>Find me Paw?</h3>
 					<p class="muted">Looking for your perfect companion? Browse through our rescued dogs and find the one that matches your lifestyle and heart. • Health checked and vaccinated • Behaviorally assessed • Ready for loving home</p>
-					<a href="adopt.html">
+					<a href="adopt.php">
 					<button class="btn primary">Adopt Dogs</button>
 					</a>
 				</div>

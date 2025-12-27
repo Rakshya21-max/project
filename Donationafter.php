@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Make a donation</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="Donation.css">
+  </head>
+  <body>
+<?php
+session_start();
+include 'db.php';
+
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.html');
+    exit;
+}
+
+$back_link = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'landingafter.php';
+?>
+    <main class="page">
+      <article class="donation-card">
+        <a href="<?php echo $back_link; ?>">
+          <button class="back" aria-label="back">←</button>
+        </a>
+        <div class="card-top">
+          <div class="logo">🐾</div>
+          <div class="titles">
+            <h1>Make a donation</h1>
+            <p class="subtitle">Help to find a shelter for paws</p>
+          </div>
+        </div>
+
+        <form class="donation-form" action="#" method="post">
+          <div class="row two-cols">
+            <label class="field">
+              <span class="lbl">First Name</span>
+              <input type="text" name="first" placeholder="First Name">
+            </label>
+            <label class="field">
+              <span class="lbl">Last Name</span>
+              <input type="text" name="last" placeholder="Last Name">
+            </label>
+          </div>
+
+          <label class="field full">
+            <span class="lbl">Email Address</span>
+            <input type="email" name="email" placeholder="Enter your email">
+          </label>
+
+          <label class="field full">
+            <span class="lbl">Amount</span>
+            <input type="number" name="amount" placeholder="Enter your amount">
+          </label>
+
+          <div class="lbl small">Payment process</div>
+          <div class="payments">
+            <!-- placeholder logos -->
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/31/Esewa_logo.png/120px-Esewa_logo.png" alt="eSewa">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5a/Khalti_logo.png/120px-Khalti_logo.png" alt="Khalti">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/04/PayPal.svg/120px-PayPal.svg.png" alt="PayPal">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/IME_Logo.png/120px-IME_Logo.png" alt="IME">
+          </div>
+
+          <div class="submit-wrap">
+            <button type="submit" class="donate">Donate</button>
+          </div>
+        </form>
+      </article>
+    </main>
+    <script src="donation.js"></script>
+  </body>
+</html>
