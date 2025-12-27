@@ -37,8 +37,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     $stmt = $conn->prepare(
-        "INSERT INTO reports (picture, location, description, email)
-         VALUES (?, ?, ?, ?)"
+        "INSERT INTO reports (picture, location, description, email, status)
+         VALUES (?, ?, ?, ?, 'Pending')"
     );
     $stmt->bind_param("ssss", $imageName, $location, $description, $email);
 
