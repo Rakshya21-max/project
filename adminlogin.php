@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Verify the password
         if (password_verify($password, $hashedPassword)) {
     $_SESSION['admin'] = $username;
-    header("Location: reported_dogs1.php");
+    header("Location: reported_dogs1.html");
     exit;
     }else {
             echo "Invalid username or password.";
