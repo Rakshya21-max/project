@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Verify the password
         if (password_verify($password, $hashedPassword)) {
     $_SESSION['admin'] = $username;
-    header("Location: admin-landing.html");
+    header("Location: reported_dogs1.php");
     exit;
     }else {
             echo "Invalid username or password.";
@@ -35,4 +35,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->close();
 }
 $conn->close();
+?>
+
+<?php
+session_start();
+
+// If admin is not logged in, redirect to login page
+if (!isset($_SESSION['admin'])) {
+    header("Location: adminlogin.php");
+    exit;
+}
+
+$adminUsername = $_SESSION['admin'];
 ?>

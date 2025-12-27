@@ -14,7 +14,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $password = $_POST["password"] ?? "";
     $confirm_password = $_POST["confirm_password"] ?? "";
 
-    $role_id = 3; // USER role
+    $role_id = 2; // USER role
     $errors = [];
 
     // VALIDATIONS

@@ -118,3 +118,69 @@ td {
 .accept-btn:hover { background: #45a049; }
 .decline-btn:hover { background: #da190b; }
 .image-btn:hover { background: #ddd; }
+
+.sidebar {
+	width: 220px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+}
+
+.back-btn {
+	display: inline-flex;
+	align-items: center;
+	gap: 6px;
+	padding: 8px 12px;
+	border-radius: 20px;
+	border: 2px solid var(--text-dark);
+	background: white;
+	color: var(--text-dark);
+	font-size: 14px;
+	cursor: pointer;
+	width: fit-content;
+	font-weight: 600;
+}
+
+.back-btn:hover {
+	border-color: var(--nav-active);
+	color: var(--nav-active);
+}
+
+.side-nav {
+	display: flex;
+	flex-direction: column;
+	gap: 0;
+	background: var(--nav-grey);
+	border-radius: 4px;
+	overflow: hidden;
+}
+
+.nav-item {
+	display: block;
+	padding: 14px 16px;
+	background: var(--nav-grey);
+	color: var(--text-dark);
+	text-decoration: none;
+	font-size: 16px;
+	border: 1px solid #c8c8c8;
+	border-bottom: none;
+	cursor: pointer;
+	text-align: center;
+	transition: all 0.2s;
+}
+
+.nav-item:last-child {
+	border-bottom: 1px solid #c8c8c8;
+}
+
+.nav-item.active {
+	background: var(--nav-active);
+	color: white;
+	font-weight: 600;
+	border-color: rgba(0, 0, 0, 0.1);
+}
+
+.nav-item:hover {
+	background: var(--nav-active);
+	color: white;
+}
