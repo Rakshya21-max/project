@@ -11,6 +11,22 @@ if (!isset($_SESSION['admin'])) {
     exit;
 }
 
+// Handle status update
+if (isset($_POST['update_id'])) {
+    $update_id = intval($_POST['update_id']);
+    $new_status = $_POST['new_status'];
+    $stmt = $conn->prepare("UPDATE reports SET status=? WHERE id=?");
+    $stmt->bind_param("si", $new_status, $update_id);
+    if ($stmt->execute()) {
+        error_log("Status updated successfully: ID $update_id to $new_status");
+    } else {
+        error_log("Status update failed: " . $stmt->error);
+    }
+    $stmt->close();
+    header("Location: reported_dogs1.php");
+    exit;
+}
+
 // Fetch pending reports
 $sql = "SELECT id, picture, location, description, email FROM reports WHERE status='Pending' ORDER BY id DESC";
 $result = $conn->query($sql);
@@ -45,13 +61,13 @@ $pending_count = $count_row['count'];
 
 		<main class="main">
 			<aside class="sidebar">
-				<button class="back-btn"> Back</button>
+				<!-- <button class="back-btn"> Back</button> -->
 
 				<nav class="side-nav">
 					<a class="nav-item active" href="reported_dogs1.php">Reported Dogs</a>
 					<a class="nav-item" href="adoptionlist.php">Adoption List</a>
-					<a class="nav-item" href="rescued-dogs.html">Rescued Dogs</a>
-					<a class="nav-item" href="add-for-adoption.html">Add for Adoption</a>
+					<a class="nav-item" href="rescued-dogs.php">Rescued Dogs</a>
+					<a class="nav-item" href="add-for-adoption.php">Add for Adoption</a>
 					<a class="nav-item" href="adopters.html">Adopters</a>
 				</nav>
 			</aside>
@@ -62,18 +78,15 @@ $pending_count = $count_row['count'];
 						<a href="reported_dogs1.php"><span class="status-label">Pending</span></a>
 						<span class="status-count"><?php echo $pending_count; ?></span>
 					</button>
-					<button class="status-btn">
+					 <button class="status-btn">
 						<a href="reported_dogs2.php"> <span class="status-label">In process</span></a>
 						<span class="status-icon">⏱</span>
 					</button>
-					<button class="status-btn">
+
+					<!-- <button class="status-btn">
 						<a href="reported_dogs3.php"><span class="status-label">Completed</span></a>
 						<span class="status-icon">✓</span>
-					</button>
-					<button class="status-btn">
-						<span class="status-label">Active Team</span>
-						<span class="status-count">3</span>
-					</button>
+					</button> -->
 				</div>
 
 				<?php
@@ -91,8 +104,11 @@ $pending_count = $count_row['count'];
 						echo '</div>';
 						echo '</div>';
 						echo '<div class="report-actions">';
-						echo '<button class="btn-details">View details</button>';
-						echo '<button class="btn-completed">Completed</button>';
+						echo '<form method="post" style="display:inline;">';
+						echo '<input type="hidden" name="update_id" value="' . $row['id'] . '">';
+						echo '<input type="hidden" name="new_status" value="In process">';
+						echo '<button type="submit" class="btn-details">Start Rescue</button>';
+						echo '</form>';
 						echo '</div>';
 						echo '</div>';
 					}

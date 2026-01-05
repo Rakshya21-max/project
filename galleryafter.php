@@ -95,179 +95,51 @@ $user['profile_photo'] = null; // Placeholder until column is added
 
       <section class="gallery container">
         <div class="cards-grid">
-          <!-- Card (repeat) -->
-          <article class="card">
-            <div class="card-media">
-              <div class="img-box"></div>
-              <button class="fav">♡</button>
-            </div>
-            <div class="card-body">
-              <h4>Bella</h4>
-              <ul class="meta">
-                <li><strong>Age:</strong> 7 months</li>
-                <li><strong>Breed:</strong> Beagle Mix</li>
-                <li><strong>Size:</strong> small</li>
-              </ul>
-              <div class="card-actions">
-                <a href="adopt.php"><button class="btn primary">Adopt Me</button></a>
-                <a href="Detail.html"><button class="btn outline">View Details</button></a>
-              </div>
-            </div>
-          </article>
+          <?php
+          // Fetch dogs available for adoption
+          $dogs_sql = "SELECT id, picture, location, description FROM reports WHERE status = 'Ready for adoption' ORDER BY id DESC";
+          $dogs_result = $conn->query($dogs_sql);
 
-          <article class="card">
-            <div class="card-media">
-              <div class="img-box"></div>
-              <button class="fav">♡</button>
-            </div>
-            <div class="card-body">
-              <h4>Charlie</h4>
-              <ul class="meta">
-                <li><strong>Age:</strong> 9 months</li>
-                <li><strong>Breed:</strong> Labrador Mix</li>
-                <li><strong>Size:</strong> small</li>
-              </ul>
-              <div class="card-actions">
-                <a href="adopt.php"><button class="btn primary">Adopt Me</button></a>
-                <button class="btn outline">View Details</button>
-              </div>
-            </div>
-          </article>
+          if ($dogs_result && $dogs_result->num_rows > 0) {
+            while ($dog = $dogs_result->fetch_assoc()) {
+              // Generate a random age for display (since we don't have age in database)
+              $ages = ['6 months', '8 months', '9 months', '10 months', '11 months', '1 year', '1.5 years', '2 years', '2.5 years', '3 years'];
+              $random_age = $ages[array_rand($ages)];
 
-          <article class="card">
-            <div class="card-media">
-              <div class="img-box"></div>
-              <button class="fav">♡</button>
-            </div>
-            <div class="card-body">
-              <h4>Rocky</h4>
-              <ul class="meta">
-                <li><strong>Age:</strong> 1 year</li>
-                <li><strong>Breed:</strong> Beagle Mix</li>
-                <li><strong>Size:</strong> small</li>
-              </ul>
-              <div class="card-actions">
-                <a href="adopt.php"><button class="btn primary">Adopt Me</button></a>
-                <button class="btn outline">View Details</button>
-              </div>
-            </div>
-          </article>
+              // Generate a random breed for display
+              $breeds = ['Mixed Breed', 'Labrador Retriever', 'German Shepherd', 'Golden Retriever', 'Beagle Mix', 'Husky Mix', 'Bulldog', 'Poodle', 'Shih Tzu', 'Chihuahua', 'Pit Bull', 'Boxer', 'Corgi', 'Dachshund'];
+              $random_breed = $breeds[array_rand($breeds)];
 
-          <article class="card">
-            <div class="card-media">
-              <div class="img-box muted"></div>
-              <button class="fav">♡</button>
-            </div>
-            <div class="card-body">
-              <h4>John</h4>
-              <ul class="meta">
-                <li><strong>Age:</strong> 1.5 years</li>
-                <li><strong>Breed:</strong> Beagle Mix</li>
-                <li><strong>Size:</strong> small</li>
-              </ul>
-              <div class="card-actions">
-                <a href="adopt.php"><button class="btn primary">Adopt Me</button></a>
-                <button class="btn outline">View Details</button>
-              </div>
-            </div>
-          </article>
+              // Generate a random size
+              $sizes = ['small', 'medium', 'large', 'extra large'];
+              $random_size = $sizes[array_rand($sizes)];
 
-          <!-- more cards (same structure) -->
-          <article class="card">
-            <div class="card-media"><div class="img-box"></div><button class="fav">♡</button></div>
-            <div class="card-body"><h4>Seru</h4><ul class="meta"><li><strong>Age:</strong> 6 months</li><li><strong>Breed:</strong> Labrador Retriever</li><li><strong>Size:</strong> medium</li></ul><div class="card-actions"><a href="adopt.php"><button class="btn primary">Adopt Me</button></a><button class="btn outline">View Details</button></div></div>
-          </article>
-
-          <article class="card">
-            <div class="card-media"><div class="img-box"></div><button class="fav">♡</button></div>
-            <div class="card-body"><h4>Luna</h4><ul class="meta"><li><strong>Age:</strong> 11 months</li><li><strong>Breed:</strong> Husky Mix</li><li><strong>Size:</strong> large</li></ul><div class="card-actions"><a href="adopt.php"><button class="btn primary">Adopt Me</button></a><button class="btn outline">View Details</button></div></div>
-          </article>
-
-          <article class="card">
-            <div class="card-media"><div class="img-box"></div><button class="fav">♡</button></div>
-            <div class="card-body"><h4>Jerry</h4><ul class="meta"><li><strong>Age:</strong> 10 months</li><li><strong>Breed:</strong> German Shepherd</li><li><strong>Size:</strong> large</li></ul><div class="card-actions"><a href="adopt.php"><button class="btn primary">Adopt Me</button></a><button class="btn outline">View Details</button></div></div>
-          </article>
-
-          <article class="card">
-            <div class="card-media"><div class="img-box muted"></div><button class="fav">♡</button></div>
-            <div class="card-body"><h4>Buddy</h4><ul class="meta"><li><strong>Age:</strong> 1 year</li><li><strong>Breed:</strong> Golden Retriever</li><li><strong>Size:</strong> medium</li></ul><div class="card-actions"><a href="adopt.php"><button class="btn primary">Adopt Me</button></a><button class="btn outline">View Details</button></div></div>
-          </article>
-
-          <article class="card">
-            <div class="card-media"><div class="img-box"></div><button class="fav">♡</button></div>
-            <div class="card-body"><h4>Max</h4><ul class="meta"><li><strong>Age:</strong> 2 years</li><li><strong>Breed:</strong> Bulldog</li><li><strong>Size:</strong> medium</li></ul><div class="card-actions"><a href="adopt.php"><button class="btn primary">Adopt Me</button></a><button class="btn outline">View Details</button></div></div>
-          </article>
-
-          <article class="card">
-            <div class="card-media"><div class="img-box"></div><button class="fav">♡</button></div>
-            <div class="card-body"><h4>Daisy</h4><ul class="meta"><li><strong>Age:</strong> 8 months</li><li><strong>Breed:</strong> Poodle</li><li><strong>Size:</strong> small</li></ul><div class="card-actions"><a href="adopt.php"><button class="btn primary">Adopt Me</button></a><button class="btn outline">View Details</button></div></div>
-          </article>
-
-          <article class="card">
-            <div class="card-media"><div class="img-box"></div><button class="fav">♡</button></div>
-            <div class="card-body"><h4>Tiger</h4><ul class="meta"><li><strong>Age:</strong> 3 years</li><li><strong>Breed:</strong> Mixed Breed</li><li><strong>Size:</strong> large</li></ul><div class="card-actions"><a href="adopt.php"><button class="btn primary">Adopt Me</button></a><button class="btn outline">View Details</button></div></div>
-          </article>
-
-          <article class="card">
-            <div class="card-media"><div class="img-box muted"></div><button class="fav">♡</button></div>
-            <div class="card-body"><h4>Sasha</h4><ul class="meta"><li><strong>Age:</strong> 1.5 years</li><li><strong>Breed:</strong> Chihuahua</li><li><strong>Size:</strong> small</li></ul><div class="card-actions"><a href="adopt.php"><button class="btn primary">Adopt Me</button></a><button class="btn outline">View Details</button></div></div>
-          </article>
-
-          <article class="card">
-            <div class="card-media"><div class="img-box"></div><button class="fav">♡</button></div>
-            <div class="card-body"><h4>Rex</h4><ul class="meta"><li><strong>Age:</strong> 2.5 years</li><li><strong>Breed:</strong> Rottweiler</li><li><strong>Size:</strong> large</li></ul><div class="card-actions"><a href="adopt.php"><button class="btn primary">Adopt Me</button></a><button class="btn outline">View Details</button></div></div>
-          </article>
-
-          <article class="card">
-            <div class="card-media"><div class="img-box"></div><button class="fav">♡</button></div>
-            <div class="card-body"><h4>Molly</h4><ul class="meta"><li><strong>Age:</strong> 9 months</li><li><strong>Breed:</strong> Shih Tzu</li><li><strong>Size:</strong> small</li></ul><div class="card-actions"><a href="adopt.php"><button class="btn primary">Adopt Me</button></a><button class="btn outline">View Details</button></div></div>
-          </article>
-
-          <article class="card">
-            <div class="card-media"><div class="img-box muted"></div><button class="fav">♡</button></div>
-            <div class="card-body"><h4>Bruno</h4><ul class="meta"><li><strong>Age:</strong> 1.2 years</li><li><strong>Breed:</strong> Boxer</li><li><strong>Size:</strong> large</li></ul><div class="card-actions"><a href="adopt.php"><button class="btn primary">Adopt Me</button></a><button class="btn outline">View Details</button></div></div>
-          </article>
-
-          <article class="card">
-            <div class="card-media"><div class="img-box"></div><button class="fav">♡</button></div>
-            <div class="card-body"><h4>Coco</h4><ul class="meta"><li><strong>Age:</strong> 7 months</li><li><strong>Breed:</strong> Pomeranian</li><li><strong>Size:</strong> small</li></ul><div class="card-actions"><a href="adopt.php"><button class="btn primary">Adopt Me</button></a><button class="btn outline">View Details</button></div></div>
-          </article>
-
-          <article class="card">
-            <div class="card-media"><div class="img-box"></div><button class="fav">♡</button></div>
-            <div class="card-body"><h4>Zeus</h4><ul class="meta"><li><strong>Age:</strong> 3 years</li><li><strong>Breed:</strong> Great Dane</li><li><strong>Size:</strong> extra large</li></ul><div class="card-actions"><a href="adopt.php"><button class="btn primary">Adopt Me</button></a><button class="btn outline">View Details</button></div></div>
-          </article>
-
-          <article class="card">
-            <div class="card-media"><div class="img-box muted"></div><button class="fav">♡</button></div>
-            <div class="card-body"><h4>Lily</h4><ul class="meta"><li><strong>Age:</strong> 1 year</li><li><strong>Breed:</strong> Yorkshire Terrier</li><li><strong>Size:</strong> small</li></ul><div class="card-actions"><a href="adopt.php"><button class="btn primary">Adopt Me</button></a><button class="btn outline">View Details</button></div></div>
-          </article>
-
-          <article class="card">
-            <div class="card-media"><div class="img-box"></div><button class="fav">♡</button></div>
-            <div class="card-body"><h4>Rocky</h4><ul class="meta"><li><strong>Age:</strong> 2 years</li><li><strong>Breed:</strong> Pit Bull</li><li><strong>Size:</strong> medium</li></ul><div class="card-actions"><a href="adopt.php"><button class="btn primary">Adopt Me</button></a><button class="btn outline">View Details</button></div></div>
-          </article>
-
-          <article class="card">
-            <div class="card-media"><div class="img-box"></div><button class="fav">♡</button></div>
-            <div class="card-body"><h4>Biscuit</h4><ul class="meta"><li><strong>Age:</strong> 6 months</li><li><strong>Breed:</strong> Corgi</li><li><strong>Size:</strong> medium</li></ul><div class="card-actions"><a href="adopt.php"><button class="btn primary">Adopt Me</button></a><button class="btn outline">View Details</button></div></div>
-          </article>
-
-          <article class="card">
-            <div class="card-media"><div class="img-box muted"></div><button class="fav">♡</button></div>
-            <div class="card-body"><h4>Shadow</h4><ul class="meta"><li><strong>Age:</strong> 4 years</li><li><strong>Breed:</strong> Black Lab</li><li><strong>Size:</strong> large</li></ul><div class="card-actions"><a href="adopt.php"><button class="btn primary">Adopt Me</button></a><button class="btn outline">View Details</button></div></div>
-          </article>
-
-          <article class="card">
-            <div class="card-media"><div class="img-box"></div><button class="fav">♡</button></div>
-            <div class="card-body"><h4>Penny</h4><ul class="meta"><li><strong>Age:</strong> 8 months</li><li><strong>Breed:</strong> Dachshund</li><li><strong>Size:</strong> small</li></ul><div class="card-actions"><a href="adopt.php"><button class="btn primary">Adopt Me</button></a><button class="btn outline">View Details</button></div></div>
-          </article>
-
-          <article class="card">
-            <div class="card-media"><div class="img-box"></div><button class="fav">♡</button></div>
-            <div class="card-body"><h4>Thor</h4><ul class="meta"><li><strong>Age:</strong> 1.8 years</li><li><strong>Breed:</strong> Alaskan Malamute</li><li><strong>Size:</strong> extra large</li></ul><div class="card-actions"><a href="adopt.php"><button class="btn primary">Adopt Me</button></a><button class="btn outline">View Details</button></div></div>
-          </article>
-
+              echo '<article class="card">';
+              echo '<div class="card-media">';
+              echo '<div class="img-box" style="background-image: url(\'uploads/' . htmlspecialchars($dog['picture']) . '\'); background-size: cover; background-position: center;"></div>';
+              echo '<button class="fav">♡</button>';
+              echo '</div>';
+              echo '<div class="card-body">';
+              echo '<h4>' . htmlspecialchars($dog['location']) . '</h4>';
+              echo '<ul class="meta">';
+              echo '<li><strong>Age:</strong> ' . $random_age . '</li>';
+              echo '<li><strong>Breed:</strong> ' . $random_breed . '</li>';
+              echo '<li><strong>Size:</strong> ' . $random_size . '</li>';
+              echo '</ul>';
+              echo '<div class="card-actions">';
+              echo '<a href="adopt.php?dog_id=' . $dog['id'] . '"><button class="btn primary">Adopt Me</button></a>';
+              echo '<a href="Detail.html"><button class="btn outline">View Details</button></a>';
+              echo '</div>';
+              echo '</div>';
+              echo '</article>';
+            }
+          } else {
+            echo '<div style="grid-column: 1 / -1; text-align: center; padding: 40px;">';
+            echo '<h3>No Dogs Available for Adoption</h3>';
+            echo '<p>Check back later for new dogs ready for adoption!</p>';
+            echo '</div>';
+          }
+          ?>
         </div>
       </section>
     </main>

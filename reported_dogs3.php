@@ -47,8 +47,8 @@ $completed_count = $count_row['count'];
 				<nav class="side-nav">
 					<a class="nav-item active" href="reported_dogs1.php">Reported Dogs</a>
 					<a class="nav-item" href="adoptionlist.php">Adoption List</a>
-					<a class="nav-item" href="rescued-dogs.html">Rescued Dogs</a>
-					<a class="nav-item" href="add-for-adoption.html">Add for Adoption</a>
+					<a class="nav-item" href="rescued-dogs.php">Rescued Dogs</a>
+					<a class="nav-item" href="add-for-adoption.php">Add for Adoption</a>
 					<a class="nav-item" href="adopters.html">Adopters</a>
 				</nav>
 			</aside>
@@ -70,10 +70,6 @@ $completed_count = $count_row['count'];
 						<span class="status-label">Completed</span>
 						<span class="status-icon">✓</span>
 					</button></a>
-					<button class="status-btn">
-						<span class="status-label">Active Team</span>
-						<span class="status-count">3</span>
-					</button>
 				</div>
 
 				<?php

@@ -45,7 +45,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     if ($stmt->execute()) {
         echo "<script>
                 alert('Dog reported successfully!');
-                window.location.href='report.html';
+                window.location.href='report.php';
               </script>";
     } else {
         echo "<script>alert('Error saving report');</script>";
