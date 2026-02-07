@@ -64,8 +64,8 @@ $in_process_count = $count_row['count'];
 					<a class="nav-item active" href="reported_dogs1.php">Reported Dogs</a>
 					<a class="nav-item" href="adoptionlist.php">Adoption List</a>
 					<a class="nav-item" href="rescued-dogs.php">Rescued Dogs</a>
-					<a class="nav-item" href="add-for-adoption.php">Add for Adoption</a>
-					<a class="nav-item" href="adopters.html">Adopters</a>
+					<a class="nav-item" href="add-for-adoption.php">Post for Adoption</a>
+					<a class="nav-item" href="adopters.php">Adopters</a>
 				</nav>
 			</aside>
 

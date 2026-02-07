@@ -101,7 +101,7 @@ $result = $conn->query($sql);
                     <a class="nav-item" href="reported_dogs1.php">Reported Dogs</a>
                     <a class="nav-item" href="adoptionlist.php">Adoption List</a>
                     <a class="nav-item active" href="rescued-dogs.php">Rescued Dogs</a>
-                    <a class="nav-item" href="add-for-adoption.php">Add for Adoption</a>
+                    <a class="nav-item" href="add-for-adoption.php">Post for Adoption</a>
                     <a class="nav-item" href="adopters.html">Adopters</a>
                 </nav>
             </aside>

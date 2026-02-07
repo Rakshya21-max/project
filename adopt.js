@@ -1,32 +1,29 @@
+<script>
+document.querySelector('.adopt-form').addEventListener('submit', function (event) {
 
-    let adopt=document.querySelector('.login2');
-    if (adopt) {
-        adopt.addEventListener('click', function(event){
+    // 1️⃣ Validate radio button questions
+    const radioGroups = ['q1', 'q2', 'q3', 'q4'];
+
+    for (let group of radioGroups) {
+        const selected = document.querySelector(`input[name="${group}"]:checked`);
+        if (!selected) {
             event.preventDefault();
-            let error = 0;
-
-            let namePattern = /^[A-Z][a-z]+$/;
-            let emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            let phonePattern = /^\d{10}$/;
-
-            let email = document.getElementById('email');
-            if (email.value === ""){
-                document.getElementById('err_email').innerText = "Email is required.";
-                error++;
-            }
-            let password = document.getElementById('password'); 
-            if (password.value === "" || !passwordPattern.test(password.value)){
-                document.getElementById('err_password').innerText = 
-                "Password must be at least 10 characters long." ;
-                error++;
-            }
-            else {
-                document.getElementById('err_password').innerText = "";
-            }
-
-            if (error >0) {
-                alert("Please fill the required information!");
-                event.preventDefault();
-}
-        });
+            alert('Please answer all Yes/No questions.');
+            return;
+        }
     }
+
+    // 2️⃣ Validate all text inputs
+    const textInputs = document.querySelectorAll('input[type="text"]');
+
+    for (let input of textInputs) {
+        if (input.value.trim() === '') {
+            event.preventDefault();
+            alert('Please fill in all text fields.');
+            input.focus();
+            return;
+        }
+    }
+
+});
+</script>

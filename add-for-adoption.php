@@ -22,7 +22,7 @@ if (!$result) {
 	<meta charset="utf-8" />
 	<meta name="viewport" content="width=device-width,initial-scale=1" />
 	<title>Add for Adoption</title>
-	<link rel="stylesheet" href="rescued-dogs.css" />
+	<link rel="stylesheet" href="adopters.css" />
 </head>
 <body>
 	<div class="frame">
@@ -47,8 +47,8 @@ if (!$result) {
 						<a class="nav-item" href="reported_dogs1.php">Reported Dogs</a>
 						<a class="nav-item" href="adoptionlist.php">Adoption List</a>
 						<a class="nav-item" href="rescued-dogs.php">Rescued Dogs</a>
-						<a class="nav-item active" href="add-for-adoption.php">Add for Adoption</a>
-						<a class="nav-item" href="adopters.html">Adopters</a>
+						<a class="nav-item active" href="add-for-adoption.php">Post for Adoption</a>
+						<a class="nav-item" href="adopters.php">Adopters</a>
 					</nav>
 				</aside>
 

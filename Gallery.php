@@ -13,7 +13,7 @@ ini_set('display_errors', 1);
 error_reporting(E_ALL);
 session_start();
 include 'db.php';
-
+/*
 if (!isset($_SESSION['user_id'])) {
     header('Location: login.html');
     exit;
@@ -32,7 +32,9 @@ if (!$user) {
 }
 $full_name = $user['first_name'] . ' ' . $user['last_name'];
 $profile_photo = $user['profile_photo'] ?? 'profile.jpg';
+*/
 ?>
+
 			<header class="site-header">
 			<div class="container header-inner">
 				<div class="logo">
@@ -41,25 +43,16 @@ $profile_photo = $user['profile_photo'] ?? 'profile.jpg';
 				</div>
 			
 				<nav class="main-nav">
-					<a class="nav-link" href="landingafter.php">Home</a>
+					<a class="nav-link" href="landingpage.html">Home</a>
 					<a class="nav-link active" href="#">Gallery</a>
-					<a class="nav-link" href="aboutusafter.php">About Us</a>
-					<a class="nav-link" href="ContactUsafter.php">Contact US</a>
+					<a class="nav-link" href="about us.html">About Us</a>
+					<a class="nav-link" href="ContactUs.html">Contact US</a>
 				</nav>
-				<div class="nav-actions profile-wrapper">
-	<div class="profile-icon" onclick="toggleDropdown()">
-		<img src="<?php echo htmlspecialchars($profile_photo); ?>" alt="Profile">
-	</div>
-
-	<div class="profile-dropdown" id="profileDropdown">
-		<p class="profile-name">Hello, <?php echo htmlspecialchars($full_name); ?></p>
-		<a href="profile.php">View Profile</a>
-		<a href="change-email.php">Change Email</a>
-		<a href="change-password.php">Change Password</a>
-		<hr>
-		<a href="logout.php" class="logout">Logout</a>
-	</div>
-</div>
+				<div class="nav-actions">
+					<a href="login.html">
+						<button class="btn outline">Login</button>
+					</a>
+				</div>
 
 			</div>
 		</header>
