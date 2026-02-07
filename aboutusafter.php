@@ -109,7 +109,7 @@ $user['profile_photo'] = null; // Placeholder until column is added
                     <p>
                         We work tirelessly to rescue abandoned and stray dogs from the streets, provide medical care, rehabilitation, and rehoming services—helping them find loving forever homes where they can thrive.
                     </p>
-                    <a class="btn primary" href="#">Learn more about our work</a>
+                    <a class="btn primary" href="Learnmore.html">Learn more about our work</a>
                 </div>
 
                 <div class="mission-image">
@@ -156,7 +156,7 @@ $user['profile_photo'] = null; // Placeholder until column is added
                 <h4>Join Our Mission to Save More Lives</h4>
                 <p>Whether you're looking to adopt, volunteer, or simply support our cause, there are many ways you can help save the lives of dogs in need.</p>
                 <div class="cta-actions">
-                    <a class="btn accent" href="#">Get Involved</a>
+           
                     <a class="btn ghost" href="Donation.html">Make a Donation</a>
                 </div>
             </div>
