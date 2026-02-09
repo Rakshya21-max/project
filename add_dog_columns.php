@@ -1,26 +1,31 @@
 <?php
 include 'db.php';
 
-// Add columns to reports table for dog details
 $columns = [
-    'name' => "VARCHAR(255) DEFAULT NULL",
-    'breed' => "VARCHAR(255) DEFAULT NULL",
-    'age' => "VARCHAR(50) DEFAULT NULL",
-    'size' => "ENUM('small', 'medium', 'large', 'extra large') DEFAULT NULL",
-    'gender' => "ENUM('male', 'female') DEFAULT NULL"
+    'name'   => "VARCHAR(100) DEFAULT NULL COMMENT 'Dog name given by admin'",
+    'breed'  => "VARCHAR(100) DEFAULT NULL",
+    'age'    => "VARCHAR(50)  DEFAULT NULL COMMENT 'e.g. 2 years, Puppy'",
+    'gender' => "ENUM('male','female') DEFAULT NULL",
+    'size'   => "ENUM('small','medium','large','extra large') DEFAULT NULL"
 ];
 
-foreach ($columns as $column => $definition) {
-    $result = $conn->query("SHOW COLUMNS FROM reports LIKE '$column'");
-    if ($result->num_rows == 0) {
-        $sql = "ALTER TABLE reports ADD COLUMN $column $definition";
+echo "<pre>";
+foreach ($columns as $col_name => $definition) {
+    // Check if column already exists
+    $check = $conn->query("SHOW COLUMNS FROM reports LIKE '$col_name'");
+    
+    if ($check->num_rows == 0) {
+        $sql = "ALTER TABLE reports ADD COLUMN $col_name $definition";
         if ($conn->query($sql) === TRUE) {
-            echo "Column $column added successfully<br>";
+            echo "Success: Added column '$col_name'\n";
         } else {
-            echo "Error adding column $column: " . $conn->error . "<br>";
+            echo "Error adding '$col_name': " . $conn->error . "\n";
         }
     } else {
-        echo "Column $column already exists<br>";
+        echo "Column '$col_name' already exists - skipped\n";
     }
 }
+echo "</pre>";
+
+$conn->close();
 ?>

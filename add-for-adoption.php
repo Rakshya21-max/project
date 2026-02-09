@@ -8,8 +8,13 @@ if (!isset($_SESSION['admin'])) {
     exit;
 }
 
-// Fetch ready for adoption and adopted reports
-$sql = "SELECT id, picture, location, description, email, status FROM reports WHERE status IN ('Ready for adoption', 'Adopted') ORDER BY id DESC";
+// Updated SQL – include the new dog detail columns
+$sql = "
+    SELECT id, picture, location, email, name, breed, age, gender, size, status 
+    FROM reports 
+    WHERE status IN ('Ready for adoption', 'Adopted') 
+    ORDER BY id DESC
+";
 $result = $conn->query($sql);
 if (!$result) {
     die("Query failed: " . $conn->error);
@@ -40,9 +45,6 @@ if (!$result) {
 
 			<main class="main">
 				<aside class="sidebar">
-					
-                
-
 					<nav class="side-nav">
 						<a class="nav-item" href="reported_dogs1.php">Reported Dogs</a>
 						<a class="nav-item" href="adoptionlist.php">Adoption List</a>
@@ -55,42 +57,49 @@ if (!$result) {
 				<section class="content">
 					<div class="table-card">
 						<table class="dogs-table">
-							<thead>
-								<tr>
-									<th>Location</th>
-									<th>Description</th>
-									<th>Email</th>
-									<th>Image</th>
-									<th>Status</th>
-								</tr>
-							</thead>
-							<tbody>
-								<?php
-								if ($result && $result->num_rows > 0) {
-									while ($row = $result->fetch_assoc()) {
-										$statusText = ($row['status'] == 'Ready for adoption') ? 'Available' : 'Adopted';
-										$statusClass = ($row['status'] == 'Ready for adoption') ? 'status-available' : 'status-adopted';
-										
-										echo '<tr>';
-										echo '<td>' . htmlspecialchars($row['location']) . '</td>';
-										echo '<td>' . htmlspecialchars($row['description']) . '</td>';
-										echo '<td>' . htmlspecialchars($row['email']) . '</td>';
-										echo '<td><img src="uploads/' . htmlspecialchars($row['picture']) . '" alt="Dog" style="width:100px;"></td>';
-										echo '<td><span class="' . $statusClass . '">' . $statusText . '</span></td>';
-										echo '</tr>';
-									}
-								} else {
-									echo '<tr><td colspan="5">No dogs available for adoption yet.</td></tr>';
-								}
-								?>
-							</tbody>
+							<!-- Inside your table <thead> -->
+<thead>
+    <tr>
+        <th>Image</th>
+        <th>Name</th>
+        <th>Breed</th>
+        <th>Age</th>
+        <th>Gender</th>
+        <th>Size</th>
+        <th>Location</th>
+        <th>Status</th>
+        <th>Actions</th> <!-- ← Add this column -->
+    </tr>
+</thead>
+
+<!-- Inside <tbody> loop -->
+<tbody>
+    <?php while ($row = $result->fetch_assoc()): ?>
+        <tr>
+            <td><img src="uploads/<?php echo htmlspecialchars($row['picture']); ?>" width="60" style="border-radius:6px;"></td>
+            <td><?php echo htmlspecialchars($row['name'] ?: 'Unnamed'); ?></td>
+            <td><?php echo htmlspecialchars($row['breed'] ?: '—'); ?></td>
+            <td><?php echo htmlspecialchars($row['age'] ?: '—'); ?></td>
+            <td><?php echo htmlspecialchars(ucfirst($row['gender'] ?? '—')); ?></td>
+            <td><?php echo htmlspecialchars(ucfirst($row['size'] ?? '—')); ?></td>
+            <td><?php echo htmlspecialchars($row['location'] ?: '—'); ?></td>
+            <td><?php echo ucfirst($row['status']); ?></td>
+            <td>
+                <a href="admin-dog-detail.php?id=<?php echo $row['id']; ?>" 
+                   style="color:#3498db; text-decoration:none; font-weight:500;">
+                    View Details
+                </a>
+            </td>
+        </tr>
+    <?php endwhile; ?>
+</tbody>
 						</table>
 					</div>
 				</section>
 			</main>
 		</div>
 	</div>
-</body>
-</html>
 
 <?php $conn->close(); ?>
+</body>
+</html>

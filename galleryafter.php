@@ -97,41 +97,81 @@ $profile_photo = $user['profile_photo'] ?? 'profile.jpg';
 
       <section class="gallery container">
         <div class="cards-grid">
-          <?php
-          // Fetch dogs available for adoption
-          $dogs_sql = "SELECT id, picture, location, description FROM reports WHERE status = 'Ready for adoption' ORDER BY id DESC";
-          $dogs_result = $conn->query($dogs_sql);
+  <?php
+  // Updated SQL – make sure to select the new fields
+  $dogs_sql = "
+      SELECT id, picture, name, breed, age, gender, size
+      FROM reports 
+      WHERE status = 'Ready for adoption' 
+      ORDER BY id DESC
+  ";
+  $dogs_result = $conn->query($dogs_sql);
 
-          if ($dogs_result && $dogs_result->num_rows > 0) {
-            while ($dog = $dogs_result->fetch_assoc()) {
-              echo '<article class="card">';
-              echo '<div class="card-media">';
-              echo '<div class="img-box" style="background-image: url(\'uploads/' . htmlspecialchars($dog['picture']) . '\'); background-size: cover; background-position: center;"></div>';
-              echo '<button class="fav">♡</button>';
-              echo '</div>';
-              echo '<div class="card-body">';
-              echo '<h4>' . htmlspecialchars($dog['name'] ?? $dog['location']) . '</h4>';
-              echo '<ul class="meta">';
-              echo '<li><strong>Age:</strong> ' . htmlspecialchars($dog['age'] ?? 'Unknown') . '</li>';
-              echo '<li><strong>Breed:</strong> ' . htmlspecialchars($dog['breed'] ?? 'Mixed') . '</li>';
-              echo '<li><strong>Size:</strong> ' . htmlspecialchars($dog['size'] ?? 'Unknown') . '</li>';
-              echo '<li><strong>Gender:</strong> ' . htmlspecialchars($dog['gender'] ?? 'Unknown') . '</li>';
-              echo '</ul>';
-              echo '<div class="card-actions">';
-              echo '<a href="adopt.php?dog_id=' . $dog['id'] . '"><button class="btn primary">Adopt Me</button></a>';
-              echo '<a href="Detail.php?dog_id=' . $dog['id'] . '"><button class="btn outline">View Details</button></a>';
-              echo '</div>';
-              echo '</div>';
-              echo '</article>';
-            }
-          } else {
-            echo '<div style="grid-column: 1 / -1; text-align: center; padding: 40px;">';
-            echo '<h3>No Dogs Available for Adoption</h3>';
-            echo '<p>Check back later for new dogs ready for adoption!</p>';
-            echo '</div>';
-          }
-          ?>
-        </div>
+  if ($dogs_result && $dogs_result->num_rows > 0) {
+      while ($dog = $dogs_result->fetch_assoc()) {
+  ?>
+          <article class="card" style="background:white; border-radius:12px; overflow:hidden; box-shadow:0 4px 16px rgba(0,0,0,0.08); transition: transform 0.2s;">
+              <div class="card-media">
+                  <div class="img-box" style="background-image: url('uploads/<?php echo htmlspecialchars($dog['picture']); ?>'); background-size: cover; background-position: center; height: 240px;"></div>
+                  <button class="fav">♡</button>
+              </div>
+
+              <div class="card-body">
+                  <h4 style="margin:0 0 10px; color:#2f6b4f; font-size:1.45rem;">
+                      <?php echo htmlspecialchars($dog['name'] ?: 'Sweet Rescued Friend'); ?>
+                  </h4>
+
+                  <ul class="meta" style="display:flex; flex-wrap:wrap; gap:10px 18px; margin-bottom:14px; font-size:0.96rem; color:#444; list-style:none; padding:0;">
+                      <?php if (!empty($dog['age'])): ?>
+                          <li><strong>Age:</strong> <?php echo htmlspecialchars($dog['age']); ?></li>
+                      <?php endif; ?>
+
+                      <?php if (!empty($dog['breed'])): ?>
+                          <li><strong>Breed:</strong> <?php echo htmlspecialchars($dog['breed']); ?></li>
+                      <?php endif; ?>
+
+                      <?php if (!empty($dog['gender'])): ?>
+                          <li><strong>Gender:</strong> <?php echo ucfirst(htmlspecialchars($dog['gender'])); ?></li>
+                      <?php endif; ?>
+
+                      <?php if (!empty($dog['size'])): ?>
+                          <li><strong>Size:</strong> <?php echo ucfirst(htmlspecialchars($dog['size'])); ?></li>
+                      <?php endif; ?>
+                  </ul>
+
+                  <!--<p style="color:#555; font-size:0.95rem; line-height:1.55; margin-bottom:18px; min-height:60px;">
+                      <?php 
+                          $desc = $dog['description'] ?? 'No description available yet.';
+                          echo htmlspecialchars(substr($desc, 0, 110)) . (strlen($desc) > 110 ? '...' : '');
+                      ?> 
+                  </p> -->
+
+                  <div class="card-actions" style="display:flex; gap:12px;">
+                      <a href="adopt.php?dog_id=<?php echo $dog['id']; ?>">
+                          <button class="btn primary" style="background:#f57c00; color:white; border:none; padding:10px 18px; border-radius:6px; cursor:pointer;">
+                              Adopt Me 🐾
+                          </button>
+                      </a>
+                      <a href="user-dog-detail.php?id=<?php echo $dog['id']; ?>">
+                          <button class="btn outline" style="background:transparent; border:1px solid #f57c00; color:#f57c00; padding:10px 18px; border-radius:6px; cursor:pointer;">
+                              View Details
+                          </button>
+                      </a>
+                  </div>
+              </div>
+          </article>
+  <?php
+      }
+  } else {
+  ?>
+      <div style="grid-column: 1 / -1; text-align: center; padding: 60px 20px; color: #666; font-size: 1.1rem;">
+          <h3>No Dogs Available for Adoption</h3>
+          <p>Check back later — new street friends are being rescued every day in Kathmandu! 🐶</p>
+      </div>
+  <?php
+  }
+  ?>
+</div>
       </section>
     </main>
 

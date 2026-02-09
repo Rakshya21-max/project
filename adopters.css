@@ -241,3 +241,47 @@ html, body {
 		overflow-x: auto;
 	}
 }
+/* Make table more spacious and readable */
+
+.dogs-table {
+    width: 100%;
+    border-collapse: separate;          /* Allows spacing between cells */
+    border-spacing: 0 8px;              /* Vertical spacing between rows */
+    font-size: 1rem;                    /* Slightly larger text */
+}
+
+.dogs-table th, .dogs-table td {
+    padding: 16px 20px !important;      /* More padding inside cells → bigger feel */
+    vertical-align: middle;
+}
+
+.dogs-table th {
+    padding: 18px 20px !important;      /* Even more space in header */
+    font-size: 1.05rem;
+    letter-spacing: 0.5px;
+}
+
+.dogs-table tr {
+    background: white;
+    transition: all 0.2s ease;
+}
+
+.dogs-table tr:hover {
+    background: #f8fff8;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+/* Optional: Make columns wider if needed */
+.dogs-table th:nth-child(1), .dogs-table td:nth-child(1) { width: 8%; }   /* ID */
+.dogs-table th:nth-child(2), .dogs-table td:nth-child(2) { width: 20%; }  /* Applicant */
+.dogs-table th:nth-child(3), .dogs-table td:nth-child(3) { width: 15%; }  /* Phone */
+.dogs-table th:nth-child(4), .dogs-table td:nth-child(4) { width: 18%; }  /* Dog */
+.dogs-table th:nth-child(5), .dogs-table td:nth-child(5) { width: 12%; }  /* Status */
+.dogs-table th:nth-child(6), .dogs-table td:nth-child(6) { width: 15%; }  /* Date */
+.dogs-table th:nth-child(7), .dogs-table td:nth-child(7) { width: 12%; }  /* Actions */
+
+/* Make text wrap nicely in longer columns */
+.dogs-table td {
+    word-wrap: break-word;
+    hyphens: auto;
+}

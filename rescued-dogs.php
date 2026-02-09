@@ -9,17 +9,35 @@ if (!isset($_SESSION['admin'])) {
 }
 
 // Handle status update
-if (isset($_POST['update_id'])) {
-    $update_id = intval($_POST['update_id']);
-    $new_status = $_POST['new_status'];
-    $stmt = $conn->prepare("UPDATE reports SET status=? WHERE id=?");
-    $stmt->bind_param("si", $new_status, $update_id);
-    $stmt->execute();
-    $stmt->close();
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action']) && $_POST['action'] === 'add_for_adoption') {
+    $update_id = intval($_POST['update_id'] ?? 0);
+    
+    if ($update_id > 0) {
+        $name   = trim($_POST['name'] ?? '');
+        $breed  = trim($_POST['breed'] ?? '');
+        $age    = trim($_POST['age'] ?? '');
+        $gender = $_POST['gender'] ?? null;
+        $size   = $_POST['size'] ?? null;
+
+        $stmt = $conn->prepare("
+            UPDATE reports 
+            SET name = ?, breed = ?, age = ?, gender = ?, size = ?, status = 'Ready for adoption'
+            WHERE id = ?
+        ");
+        $stmt->bind_param("sssssi", $name, $breed, $age, $gender, $size, $update_id);
+        
+        if ($stmt->execute()) {
+            // Optional: success message
+            $_SESSION['success'] = "Dog added for adoption successfully!";
+        } else {
+            $_SESSION['error'] = "Error: " . $stmt->error;
+        }
+        $stmt->close();
+    }
+    
     header("Location: rescued-dogs.php");
     exit;
 }
-
 // Fetch all rescued dogs
 $sql = "SELECT * FROM reports WHERE status = 'Rescued' ORDER BY id DESC";
 $result = $conn->query($sql);
@@ -102,47 +120,138 @@ $result = $conn->query($sql);
                     <a class="nav-item" href="adoptionlist.php">Adoption List</a>
                     <a class="nav-item active" href="rescued-dogs.php">Rescued Dogs</a>
                     <a class="nav-item" href="add-for-adoption.php">Post for Adoption</a>
-                    <a class="nav-item" href="adopters.html">Adopters</a>
+                    <a class="nav-item" href="adopters.php">Adopters</a>
                 </nav>
             </aside>
 
-            <section class="content">
+                      <section class="content">
                 <h2>Rescued Dogs</h2>
-                <div class="rescued-container">
-                    <?php if ($result && $result->num_rows > 0): ?>
-                        <div class="rescued-grid">
-                            <?php while ($row = $result->fetch_assoc()): ?>
-                                <div class="rescued-card">
-                                    <img src="uploads/<?php echo htmlspecialchars($row['picture']); ?>"
-                                         alt="Rescued Dog" class="rescued-image">
-                                    <div class="rescued-info">
-                                        <div class="rescued-location">
-                                            📍 <?php echo htmlspecialchars($row['location']); ?>
-                                        </div>
-                                        <div class="rescued-description">
-                                            <?php echo htmlspecialchars($row['description']); ?>
-                                        </div>
-                                        <div class="rescued-email">
-                                            📧 <?php echo htmlspecialchars($row['email']); ?>
-                                        </div>
-                                        <form method="post" style="margin-top: 10px;">
-                                            <input type="hidden" name="update_id" value="<?php echo $row['id']; ?>">
-                                            <input type="hidden" name="new_status" value="Ready for adoption">
-                                            <button type="submit" style="background: #28a745; color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer;">
-                                                Add for Adoption
-                                            </button>
-                                        </form>
+
+                <?php
+                // Show success/error messages (from your POST handler)
+                if (isset($_SESSION['success'])) {
+                    echo '<div style="background:#d4edda; color:#155724; padding:12px; margin:20px 0; border-radius:6px;">'
+                       . $_SESSION['success'] . '</div>';
+                    unset($_SESSION['success']);
+                }
+                if (isset($_SESSION['error'])) {
+                    echo '<div style="background:#f8d7da; color:#721c24; padding:12px; margin:20px 0; border-radius:6px;">'
+                       . $_SESSION['error'] . '</div>';
+                    unset($_SESSION['error']);
+                }
+                ?>
+
+               <div class="rescued-container">
+    <?php
+    // Show success/error messages from previous form submission
+    if (isset($_SESSION['success'])) {
+        echo '<div style="background:#d4edda; color:#155724; padding:12px; margin:20px 0; border-radius:6px; text-align:center;">'
+           . $_SESSION['success'] . '</div>';
+        unset($_SESSION['success']);
+    }
+    if (isset($_SESSION['error'])) {
+        echo '<div style="background:#f8d7da; color:#721c24; padding:12px; margin:20px 0; border-radius:6px; text-align:center;">'
+           . $_SESSION['error'] . '</div>';
+        unset($_SESSION['error']);
+    }
+
+    if ($result && $result->num_rows > 0) {
+        while ($row = $result->fetch_assoc()) {
+    ?>
+            <div class="rescued-card">
+                <?php if (!empty($row['picture'])): ?>
+                    <img src="uploads/<?php echo htmlspecialchars($row['picture']); ?>" 
+                         alt="Rescued dog" class="rescued-image">
+                <?php endif; ?>
+
+                <div class="rescued-info">
+                    <div class="rescued-location">
+                        <strong>Location:</strong> <?php echo htmlspecialchars($row['location'] ?? 'Unknown'); ?>
+                    </div>
+                    <div class="rescued-description">
+                        <?php echo htmlspecialchars(substr($row['description'] ?? 'No description', 0, 120)) . '...'; ?>
+                    </div>
+                    <div class="rescued-email" style="margin-top:8px; font-size:0.9rem; color:#666;">
+                        Reported by: <?php echo htmlspecialchars($row['email'] ?? 'N/A'); ?>
+                    </div>
+
+                    <!-- FIXED FORM – only shows for 'Rescued' dogs -->
+                    <?php if ($row['status'] === 'Rescued'): ?>
+                        <div class="add-for-adoption-form" style="margin-top:20px; padding:15px; background:#f8fff8; border:1px solid #c3e6cb; border-radius:8px;">
+                            <h4 style="margin:0 0 12px; color:#2f6b4f;">
+                                Add <?php echo htmlspecialchars($row['name'] ?? 'this dog'); ?> for adoption
+                            </h4>
+
+                            <form method="post" action="">
+                                <input type="hidden" name="update_id" value="<?php echo $row['id']; ?>">
+                                <input type="hidden" name="action" value="add_for_adoption">
+
+                                <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                                    <div>
+                                        <label style="font-size:0.9rem; color:#555;">Name</label>
+                                        <input type="text" name="name" 
+                                               value="<?php echo htmlspecialchars($row['name'] ?? ''); ?>" 
+                                               placeholder="Give a name" 
+                                               style="width:100%; padding:8px; margin-top:4px;">
+                                    </div>
+                                    
+                                    <div>
+                                        <label style="font-size:0.9rem; color:#555;">Breed</label>
+                                        <input type="text" name="breed" 
+                                               value="<?php echo htmlspecialchars($row['breed'] ?? ''); ?>" 
+                                               placeholder="e.g. Indie Mix" 
+                                               style="width:100%; padding:8px; margin-top:4px;">
+                                    </div>
+                                    
+                                    <div>
+                                        <label style="font-size:0.9rem; color:#555;">Age</label>
+                                        <input type="text" name="age" 
+                                               value="<?php echo htmlspecialchars($row['age'] ?? ''); ?>" 
+                                               placeholder="e.g. 2 years" 
+                                               style="width:100%; padding:8px; margin-top:4px;">
+                                    </div>
+                                    
+                                    <div>
+                                        <label style="font-size:0.9rem; color:#555;">Gender</label>
+                                        <select name="gender" style="width:100%; padding:8px; margin-top:4px;">
+                                            <option value="">Select</option>
+                                            <option value="male"   <?php echo (isset($row['gender']) && $row['gender'] === 'male')   ? 'selected' : ''; ?>>Male</option>
+                                            <option value="female" <?php echo (isset($row['gender']) && $row['gender'] === 'female') ? 'selected' : ''; ?>>Female</option>
+                                        </select>
+                                    </div>
+                                    
+                                    <div>
+                                        <label style="font-size:0.9rem; color:#555;">Size</label>
+                                        <select name="size" style="width:100%; padding:8px; margin-top:4px;">
+                                            <option value="">Select</option>
+                                            <option value="small"       <?php echo (isset($row['size']) && $row['size'] === 'small')       ? 'selected' : ''; ?>>Small</option>
+                                            <option value="medium"      <?php echo (isset($row['size']) && $row['size'] === 'medium')      ? 'selected' : ''; ?>>Medium</option>
+                                            <option value="large"       <?php echo (isset($row['size']) && $row['size'] === 'large')       ? 'selected' : ''; ?>>Large</option>
+                                            <option value="extra large" <?php echo (isset($row['size']) && $row['size'] === 'extra large') ? 'selected' : ''; ?>>Extra Large</option>
+                                        </select>
                                     </div>
                                 </div>
-                            <?php endwhile; ?>
-                        </div>
-                    <?php else: ?>
-                        <div class="no-dogs">
-                            <h3>No Rescued Dogs Yet</h3>
-                            <p>Dogs will appear here once they are marked as rescued.</p>
+
+                                <button type="submit" 
+                                        style="margin-top:16px; background:#f57c00; color:white; border:none; padding:12px; width:100%; border-radius:6px; cursor:pointer; font-weight:600;">
+                                    Save & Mark Ready for Adoption
+                                </button>
+                            </form>
                         </div>
                     <?php endif; ?>
                 </div>
+            </div>
+    <?php
+        }
+    } else {
+    ?>
+        <div class="no-dogs">
+            No rescued dogs found at the moment.
+        </div>
+    <?php
+    }
+    ?>
+</div>
             </section>
         </main>
     </div>
