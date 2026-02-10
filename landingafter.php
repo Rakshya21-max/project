@@ -70,7 +70,7 @@ $user['profile_photo'] = null; // Placeholder until column is added
 						<h1 class="hero-title">Street Dog<br />Adoption <span class="accent">Services</span></h1>
 						<p class="hero-sub">Behind every pair of hopeful eyes is a dog waiting for love. At RescueTails, we connect abandoned paws with caring hearts, creating forever bonds that transform lives — both theirs and yours.</p>
 							<div class="hero-ctas">
-							<a href="Report.html">
+							<a href="report.php">
 							<button class="btn primary">Report</button>
 							</a>
 							
