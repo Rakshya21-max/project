@@ -15,14 +15,30 @@ html, body { height: 100%; margin: 0; font-family: Inter, system-ui, Segoe UI, R
 .container { max-width: 1600px; margin: 0 auto; padding: 0 12px; }
 
 /* Header */
-.site-header { background: #f6f6f6; padding: 18px 0; border-bottom: 1px solid #eee; position: sticky; top: 0; z-index: 40; }
-.header-inner { display: flex; align-items: center; justify-content: space-between; }
-.brand { display: flex; align-items: center; gap: 12px; text-decoration: none; font-weight: 700; font-size: 18px; color: #333; }
-.brand-text { font-family: Montserrat, Arial; }
-.main-nav { display: flex; gap: 8px; }
-.main-nav a { padding: 8px 14px; border-radius: 20px; text-decoration: none; color: #333; font-size: 16px; }
-.main-nav a.active { background: #ffd8b8; }
-.login-btn button { background: #fff; border: 1px solid #ddd; padding: 8px 12px; border-radius: 8px; cursor: pointer; }
+.site-header{background:#f6f6f6;padding:18px 0;border-bottom:1px solid #eee}
+.header-inner{display:flex;align-items:center;justify-content:space-between}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-mark{width:48px;height:48px;border-radius:50%;background:linear-gradient(180deg,#eaf8ef,#dff1e6);display:flex;align-items:center;justify-content:center;font-size:22px}
+.brand{font-weight:700;font-family:Montserrat,Arial;font-size:18px}
+.main-nav a{margin:0 12px;padding:8px 14px;border-radius:20px;text-decoration:none;color:#333;font-size:16px}
+.main-nav a.active{background:#ffd8b8}
+.nav-actions .btn.login{background:#fff;border:1px solid #ddd;padding:8px 12px;border-radius:8px}
+
+/* Hero compact */
+.hero-compact{background:var(--green);color:#fff;padding:36px 0}
+.hero-compact .container{display:block}
+.hero-compact h1{margin:0;font-size:36px;text-align:center;font-weight:700}
+.hero-sub{margin-top:8px;text-align:center;opacity:0.95;font-size:18px}
+.stats{margin-top:12px;text-align:center;opacity:0.95;font-size:14px}
+.filters{display:flex;gap:16px;margin-top:20px;justify-content:center;align-items:center}
+.filters .search{flex:1;max-width:720px;padding:14px 16px;border-radius:10px;border:0;font-size:16px}
+.filters select{padding:10px 12px;border-radius:8px;border:0}
+.btn{font-weight:700;border-radius:10px;padding:10px 14px;cursor:pointer}
+.btn.primary{background:var(--accent);color:#fff;border:0}
+.btn.outline{background:transparent;border:2px solid rgba(2, 2, 2, 0.823);color:#6e6b67}
+.btn.heart{background:rgba(255,255,255,0.18)}
+.btn.outline.heart{border:2px solid rgba(255,255,255,0.18);color:#fff}
+
 
 /* Hero */
 .hero { background: var(--green); color: #fff; padding: 60px 0; text-align: center; }

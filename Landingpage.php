@@ -38,33 +38,34 @@ if (!$conn) {
 			</div>
 		</header>
 
-		<main>
-			<!-- HERO -->
-			<section class="hero">
-				<div class="container hero-grid">
-					<div class="hero-left">
-						<h1 class="hero-title">Street Dog<br />Adoption <span class="accent">Services</span></h1>
-						<p class="hero-sub">Behind every pair of hopeful eyes is a dog waiting for love. At RescueTails, we connect abandoned paws with caring hearts, creating forever bonds that transform lives — both theirs and yours.</p>
-						<div class="hero-ctas">
-							<a href="report.php">
-							<button class="btn primary">Report</button>
-							</a>
-							<a href="signup.html">
-								<button class="btn ghost">Sign-Up</button>
-							</a>
-						</div>
-					</div>
+<main>
+    <!-- HERO -->
+    <section class="hero">
+        <div class="container hero-grid">
+            <div class="hero-left">
+                <h1 class="hero-title">Street Dog<br />Adoption <span class="accent">Services</span></h1>
+                <p class="hero-sub">Behind every pair of hopeful eyes is a dog waiting for love. At RescueTails, we connect abandoned paws with caring hearts, creating forever bonds that transform lives — both theirs and yours.</p>
+                <div class="hero-ctas">
+                    <a href="report.php">
+                        <button class="btn primary">Report</button>
+                    </a>
+                    <a href="signup.html">
+                        <button class="btn ghost">Sign-Up</button>
+                    </a>
+                </div>
+            </div>
 
-					<div class="hero-rig
-					ht">
-							
+            <div class="hero-right">
+								
+
 								<div class="hero-circle">
 									<img src="1.jpg" alt="photo">
 									<div class="img-box img-circle" aria-label="image placeholder" ></div>
 								</div>
 					</div>
-				</div>
-			</section>
+        </div>
+    </section>
+</main>
 
 			<!-- GREEN BAND WITH 3 PHOTOS -->
 			<section class="green-band">
@@ -96,9 +97,7 @@ if (!$conn) {
 						<li>★ Voice for strays</li>
 						<li>★ Hope for paws</li>
 					</ul>
-					<a href="Donation.html">
-					<button class="btn primary">Donate</button>
-					</a>
+					
 				</aside>
 			</section>
 <!-- FEATURED RESCUES - dynamic from database -->
@@ -199,7 +198,7 @@ if (!$conn) {
 				<div class="cta-left">
 					<h3>Find me Paw?</h3>
 					<p class="muted">Looking for your perfect companion? Browse through our rescued dogs and find the one that matches your lifestyle and heart. • Health checked and vaccinated • Behaviorally assessed • Ready for loving home</p>
-					<a href="adopt.html">
+					<a href="adopt.php">
 					<button class="btn primary">Adopt Dogs</button>
 					</a>
 				</div>

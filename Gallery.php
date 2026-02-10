@@ -43,7 +43,7 @@ $profile_photo = $user['profile_photo'] ?? 'profile.jpg';
 				</div>
 			
 				<nav class="main-nav">
-					<a class="nav-link" href="landingpage.html">Home</a>
+					<a class="nav-link" href="landingpage.php">Home</a>
 					<a class="nav-link active" href="#">Gallery</a>
 					<a class="nav-link" href="about us.html">About Us</a>
 					<a class="nav-link" href="ContactUs.html">Contact US</a>

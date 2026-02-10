@@ -118,9 +118,7 @@ $user['profile_photo'] = null; // Placeholder until column is added
 						<li>★ Voice for strays</li>
 						<li>★ Hope for paws</li>
 					</ul>
-					<a href="Donationafter.php">
-					<button class="btn primary">Donate</button>
-					</a>
+					
 				</aside>
 			</section>
 
@@ -195,7 +193,8 @@ $user['profile_photo'] = null; // Placeholder until column is added
 			<section class="final-cta container cta-row">
 				<div class="cta-left">
 					<h3>Find me Paw?</h3>
-					<p class="muted">Looking for your perfect companion? Browse through our rescued dogs and find the one that matches your lifestyle and heart. • Health checked and vaccinated • Behaviorally assessed • Ready for loving home</p>
+					<p class="muted">Looking for your perfect companion? Browse through our rescued dogs
+						<br> and find the one that matches your lifestyle and heart. • Health checked and vaccinated • Behaviorally assessed • Ready for loving home</p>
 					<a href="adopt.php">
 					<button class="btn primary">Adopt Dogs</button>
 					</a>

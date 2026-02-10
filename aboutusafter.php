@@ -114,7 +114,7 @@ $user['profile_photo'] = null; // Placeholder until column is added
 
                 <div class="mission-image">
                     <!-- Replace with actual image at images/rottweiler.jpg -->
-                    <img src="images/dog.jpg" alt="Happy rescued dog" />
+                    <img src="Photos/9.jpg" alt="Happy rescued dog" />
                 </div>
             </div>
         </section>
@@ -157,7 +157,7 @@ $user['profile_photo'] = null; // Placeholder until column is added
                 <p>Whether you're looking to adopt, volunteer, or simply support our cause, there are many ways you can help save the lives of dogs in need.</p>
                 <div class="cta-actions">
            
-                    <a class="btn ghost" href="Donation.html">Make a Donation</a>
+                   
                 </div>
             </div>
         </section>
