@@ -28,7 +28,7 @@ $errors = [];
 $success = false;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Collect and sanitize all fields (same names as your form)
+    // Collect and sanitize all fields
     $q1             = $_POST['q1'] ?? '';
     $q2             = $_POST['q2'] ?? '';
     $q3             = $_POST['q3'] ?? '';
@@ -42,11 +42,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $reason         = trim($_POST['reason'] ?? '');
     $final_decision = $_POST['final_decision'] ?? '';
 
-    // Server-side validation (all fields required except where logical)
-    if (empty($q1)) $errors[] = "Question 1 is required (Do you agree not to abandon...)";
-    if (empty($q2)) $errors[] = "Question 2 is required (proper care, love and medical attention)";
-    if (empty($q3)) $errors[] = "Question 3 is required (train the dog patiently)";
-    if (empty($q4)) $errors[] = "Question 4 is required (home fenced or suitable)";
+    // Server-side validation
+    if (empty($q1)) $errors[] = "Question 1 is required";
+    if (empty($q2)) $errors[] = "Question 2 is required";
+    if (empty($q3)) $errors[] = "Question 3 is required";
+    if (empty($q4)) $errors[] = "Question 4 is required";
     if (empty($household) || !is_numeric($household) || $household < 1) $errors[] = "Valid number of household members is required";
     if (empty($children)) $errors[] = "Please select if there are children";
     if (empty($prev_dog)) $errors[] = "Please select if you owned a dog before";
@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($caregiver)) $errors[] = "Primary caregiver name is required";
     if (empty($illness)) $errors[] = "Please explain what you would do if the dog becomes seriously ill";
     if (empty($reason)) $errors[] = "Please explain why you want to adopt this pet";
-    if (empty($final_decision)) $errors[] = "Final decision (Do you want to adopt this pet?) is required";
+    if (empty($final_decision)) $errors[] = "Final decision is required";
 
     // If no errors → save to database
     if (empty($errors)) {
@@ -78,11 +78,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $final_decision
         );
 
-        if ($stmt->execute()) {
-            $success = true;
-        } else {
-            $errors[] = "Database error: " . $stmt->error;
-        }
+        try {
+    if ($stmt->execute()) {
+        $success = true;
+    }
+} catch (mysqli_sql_exception $e) {
+    if ($e->getCode() == 1062) { // 1062 = duplicate entry error in MySQL/MariaDB
+        $errors[] = "You have already submitted an adoption application for this dog. One application per dog per user is allowed.";
+    } else {
+        $errors[] = "Database error: " . $e->getMessage();
+    }
+}
         $stmt->close();
     }
 }
@@ -93,9 +99,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Adopt a dog</title>
+    <title>Adopt <?php echo htmlspecialchars($dog_name); ?> - RescueTails</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="Adopt.css">
+    <style>
+        /* Prevent double-click visual glitch */
+        button:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    </style>
 </head>
 <body>
     <main class="page">
@@ -209,7 +222,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </label>
 
                     <div class="submit-wrap">
-                        <button class="login2" type="submit">Submit</button>
+                        <button class="login2" type="submit" id="submitBtn">Submit</button>
                     </div>
                 </form>
             <?php endif; ?>
@@ -232,71 +245,86 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </main>
 
     <script>
-        // Your existing client-side validation (kept as-is, works well)
-        document.getElementById('adoptForm')?.addEventListener('submit', function(event) {
-            event.preventDefault();
-            let isValid = true;
-            
-            // Validate radio buttons
-            const questions = ['q1', 'q2', 'q3', 'q4'];
-            questions.forEach(q => {
-                const checked = document.querySelector(`input[name="${q}"]:checked`);
-                const errorEl = document.getElementById(`err_${q}`);
-                if (!checked) {
-                    isValid = false;
-                    if (errorEl) errorEl.textContent = 'This field is required';
-                } else {
-                    if (errorEl) errorEl.textContent = '';
+        // Client-side validation + PREVENT DOUBLE SUBMISSION
+        const form = document.getElementById('adoptForm');
+        const submitBtn = document.getElementById('submitBtn');
+
+        if (form) {
+            form.addEventListener('submit', function(event) {
+                // Prevent default first so we can validate
+                event.preventDefault();
+
+                let isValid = true;
+
+                // Validate radio buttons
+                const questions = ['q1', 'q2', 'q3', 'q4'];
+                questions.forEach(q => {
+                    const checked = document.querySelector(`input[name="${q}"]:checked`);
+                    const errorEl = document.getElementById(`err_${q}`);
+                    if (!checked) {
+                        isValid = false;
+                        if (errorEl) errorEl.textContent = 'This field is required';
+                    } else {
+                        if (errorEl) errorEl.textContent = '';
+                    }
+                });
+
+                // Validate text/number inputs
+                const inputs = document.querySelectorAll('input[type="text"], input[type="number"]');
+                inputs.forEach(input => {
+                    if (input.value.trim() === '') {
+                        isValid = false;
+                        const errorEl = input.parentElement.querySelector('.error') || input.parentElement.parentElement.querySelector('.error');
+                        if (errorEl) errorEl.textContent = 'This field is required';
+                    } else {
+                        const errorEl = input.parentElement.querySelector('.error') || input.parentElement.parentElement.querySelector('.error');
+                        if (errorEl) errorEl.textContent = '';
+                    }
+                });
+
+                // Validate selects
+                const selects = document.querySelectorAll('select');
+                selects.forEach(select => {
+                    if (select.value === '') {
+                        isValid = false;
+                        const errorEl = select.parentElement.querySelector('.error') || select.parentElement.parentElement.querySelector('.error');
+                        if (errorEl) errorEl.textContent = 'Please select an option';
+                    } else {
+                        const errorEl = select.parentElement.querySelector('.error') || select.parentElement.parentElement.querySelector('.error');
+                        if (errorEl) errorEl.textContent = '';
+                    }
+                });
+
+                // Validate textareas
+                const textareas = document.querySelectorAll('textarea');
+                textareas.forEach(textarea => {
+                    if (textarea.value.trim() === '') {
+                        isValid = false;
+                        const errorEl = textarea.parentElement.querySelector('.error') || textarea.parentElement.parentElement.querySelector('.error');
+                        if (errorEl) errorEl.textContent = 'This field is required';
+                    } else {
+                        const errorEl = textarea.parentElement.querySelector('.error') || textarea.parentElement.parentElement.querySelector('.error');
+                        if (errorEl) errorEl.textContent = '';
+                    }
+                });
+
+                if (!isValid) {
+                    alert('Please fill in all required fields');
+                    return;
                 }
-            });
-            
-            // Validate text inputs & number
-            const textInputs = document.querySelectorAll('input[type="text"], input[type="number"]');
-            textInputs.forEach(input => {
-                if (input.value.trim() === '') {
-                    isValid = false;
-                    const errorEl = input.parentElement.querySelector('.error') || input.parentElement.parentElement.querySelector('.error');
-                    if (errorEl) errorEl.textContent = 'This field is required';
-                } else {
-                    const errorEl = input.parentElement.querySelector('.error') || input.parentElement.parentElement.querySelector('.error');
-                    if (errorEl) errorEl.textContent = '';
+
+                // === PREVENT DOUBLE SUBMISSION ===
+                if (submitBtn.disabled) {
+                    return; // already submitting
                 }
+                submitBtn.disabled = true;
+                submitBtn.textContent = 'Submitting... Please wait';
+                submitBtn.style.cursor = 'not-allowed';
+
+                // Now submit the form
+                this.submit();
             });
-            
-            // Validate select dropdowns
-            const selects = document.querySelectorAll('select');
-            selects.forEach(select => {
-                if (select.value === '') {
-                    isValid = false;
-                    const errorEl = select.parentElement.querySelector('.error') || select.parentElement.parentElement.querySelector('.error');
-                    if (errorEl) errorEl.textContent = 'Please select an option';
-                } else {
-                    const errorEl = select.parentElement.querySelector('.error') || select.parentElement.parentElement.querySelector('.error');
-                    if (errorEl) errorEl.textContent = '';
-                }
-            });
-            
-            // Validate textareas
-            const textareas = document.querySelectorAll('textarea');
-            textareas.forEach(textarea => {
-                if (textarea.value.trim() === '') {
-                    isValid = false;
-                    const errorEl = textarea.parentElement.querySelector('.error') || textarea.parentElement.parentElement.querySelector('.error');
-                    if (errorEl) errorEl.textContent = 'This field is required';
-                } else {
-                    const errorEl = textarea.parentElement.querySelector('.error') || textarea.parentElement.parentElement.querySelector('.error');
-                    if (errorEl) errorEl.textContent = '';
-                }
-            });
-            
-            if (!isValid) {
-                alert('Please fill in all required fields');
-                return;
-            }
-            
-            // If JS validation passes → submit to server
-            this.submit();
-        });
+        }
     </script>
 </body>
 </html>
