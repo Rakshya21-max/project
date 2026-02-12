@@ -47,3 +47,13 @@ body{
   .adopt-form{max-width:100%}
   .two-cols{flex-direction:column}
 }
+.error-field {
+    border: 2px solid #d32f2f !important;
+    background-color: #ffebee;
+}
+
+.error, .radio-error {
+    color: #d32f2f;
+    font-size: 0.9rem;
+    margin-top: 4px;
+}

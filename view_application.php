@@ -15,26 +15,79 @@ if ($application_id <= 0) {
 
 // Handle accept / reject from this page
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['action'])) {
-    $action = $_POST['action']; // 'approved' or 'rejected'
+    $action = $_POST['action'];
 
-    $stmt = $conn->prepare("UPDATE adoption_applications SET status = ? WHERE id = ?");
-    $stmt->bind_param("si", $action, $application_id);
-    $stmt->execute();
-    $stmt->close();
+    // Handle Approve or Reject (your existing logic)
+    if ($action === 'approved' || $action === 'rejected') {
+        $stmt = $conn->prepare("UPDATE adoption_applications SET status = ? WHERE id = ?");
+        $stmt->bind_param("si", $action, $application_id);
+        $stmt->execute();
+        $stmt->close();
 
-    // If approved → mark dog as adopted
-    if ($action === 'approved') {
-        $update_dog = $conn->prepare("
-            UPDATE reports 
-            SET status = 'Adopted' 
-            WHERE id = (SELECT dog_id FROM adoption_applications WHERE id = ?)
-        ");
-        $update_dog->bind_param("i", $application_id);
-        $update_dog->execute();
-        $update_dog->close();
+        if ($action === 'approved') {
+            $update_dog = $conn->prepare("
+                UPDATE reports 
+                SET status = 'In Adoption Process'
+                WHERE id = (SELECT report_id FROM adoption_applications WHERE id = ?)
+            ");
+            $update_dog->bind_param("i", $application_id);
+            $update_dog->execute();
+            $update_dog->close();
+        }
+
+        // Optional: on reject, reset dog to Ready (uncomment if you want this)
+        /*
+        if ($action === 'rejected') {
+            $reset = $conn->prepare("
+                UPDATE reports 
+                SET status = 'Ready for adoption'
+                WHERE id = (SELECT report_id FROM adoption_applications WHERE id = ?)
+            ");
+            $reset->bind_param("i", $application_id);
+            $reset->execute();
+            $reset->close();
+        }
+        */
     }
 
-    // Refresh the page
+    // Mark as Fully Adopted
+    if ($action === 'mark_adopted') {
+        $stmt = $conn->prepare("UPDATE adoption_applications SET status = 'adopted' WHERE id = ?");
+        $stmt->bind_param("i", $application_id);
+        $stmt->execute();
+        $stmt->close();
+
+        $update = $conn->prepare("
+            UPDATE reports 
+            SET status = 'Adopted'
+            WHERE id = (SELECT report_id FROM adoption_applications WHERE id = ?)
+        ");
+        $update->bind_param("i", $application_id);
+        $update->execute();
+        $update->close();
+    }
+
+    // NEW: Cancel adoption process → back to Ready for adoption
+    if ($action === 'cancel_process') {
+        // Optional: set application back to pending or rejected (your choice)
+        // Here we set it to 'cancelled' (you can change to 'pending' or 'rejected')
+        $stmt = $conn->prepare("UPDATE adoption_applications SET status = 'cancelled' WHERE id = ?");
+        $stmt->bind_param("i", $application_id);
+        $stmt->execute();
+        $stmt->close();
+
+        // Reset dog status
+        $reset = $conn->prepare("
+            UPDATE reports 
+            SET status = 'Ready for adoption'
+            WHERE id = (SELECT report_id FROM adoption_applications WHERE id = ?)
+        ");
+        $reset->bind_param("i", $application_id);
+        $reset->execute();
+        $reset->close();
+    }
+
+    // Refresh page
     header("Location: view_application.php?id=$application_id&updated=1");
     exit;
 }
@@ -192,6 +245,7 @@ if (!$app) {
     </div>
 
     <!-- Accept / Reject Buttons -->
+
     <?php if ($app['status'] === 'pending'): ?>
         <div class="action-buttons">
             <form method="post" style="display:inline;">
@@ -203,6 +257,30 @@ if (!$app) {
             </form>
         </div>
     <?php endif; ?>
+    <?php if ($app['status'] === 'approved'): ?>
+    <div class="action-buttons" style="margin-top: 20px;">
+        <form method="post" style="display:inline;">
+        
+        </form>
+    </div>
+<?php endif; ?>
+<?php if ($app['status'] === 'approved'): ?>
+    <div class="action-buttons" style="margin-top: 20px;">
+        <!-- Existing Mark as Adopted -->
+        <form method="post" style="display:inline;">
+            <button type="submit" name="action" value="mark_adopted" class="btn-action" style="background:#2f6b4f; color:white; padding:12px 30px;">
+                Mark as Fully Adopted ✓
+            </button>
+        </form>
+
+        <!-- NEW: Cancel Process -->
+        <form method="post" style="display:inline;">
+            <button type="submit" name="action" value="cancel_process" class="btn-action" style="background:#e67e22; color:white; padding:12px 30px;">
+                Cancel Process / Make Available Again
+            </button>
+        </form>
+    </div>
+<?php endif; ?>
 </div>
 
 </body>

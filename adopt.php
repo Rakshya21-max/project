@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($caregiver)) $errors[] = "Primary caregiver name is required";
     if (empty($illness)) $errors[] = "Please explain what you would do if the dog becomes seriously ill";
     if (empty($reason)) $errors[] = "Please explain why you want to adopt this pet";
-    if (empty($final_decision)) $errors[] = "Final decision is required";
+    if (empty($final_decision)) $errors[] = "Please select whether you want to adopt this pet";
 
     // If no errors → save to database
     if (empty($errors)) {
@@ -79,16 +79,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         );
 
         try {
-    if ($stmt->execute()) {
-        $success = true;
-    }
-} catch (mysqli_sql_exception $e) {
-    if ($e->getCode() == 1062) { // 1062 = duplicate entry error in MySQL/MariaDB
-        $errors[] = "You have already submitted an adoption application for this dog. One application per dog per user is allowed.";
-    } else {
-        $errors[] = "Database error: " . $e->getMessage();
-    }
-}
+            if ($stmt->execute()) {
+                $success = true;
+            }
+        } catch (mysqli_sql_exception $e) {
+            if ($e->getCode() == 1062) {
+                $errors[] = "You have already submitted an adoption application for this dog.";
+            } else {
+                $errors[] = "Database error: " . $e->getMessage();
+            }
+        }
         $stmt->close();
     }
 }
@@ -103,10 +103,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="Adopt.css">
     <style>
-        /* Prevent double-click visual glitch */
         button:disabled {
             opacity: 0.6;
             cursor: not-allowed;
+        }
+        .error-field {
+            border: 2px solid #d32f2f !important;
+            background-color: #ffebee !important;
+        }
+        .field .error, .radio-error {
+            color: #d32f2f;
+            font-size: 0.85rem;
+            margin-top: 4px;
+            display: block;
+        }
+        #thankyou-msg {
+            display: none;
+            color: #2e7d32;
+            font-weight: 500;
+            margin: 15px 0;
+            padding: 12px;
+            background: #e8f5e9;
+            border-radius: 6px;
+            text-align: center;
         }
     </style>
 </head>
@@ -125,7 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
 
             <?php if ($success): ?>
-                <div id="successMessage" style="display:block; text-align:center; padding:40px 20px;">
+                <div style="text-align:center; padding:40px 20px;">
                     <div style="background-color: #4CAF50; color: white; padding: 30px; border-radius: 8px; margin-top: 20px;">
                         <h2 style="margin: 0 0 10px 0;">✓ Form Submitted Successfully!</h2>
                         <p style="margin: 10px 0; font-size: 16px;">
@@ -142,7 +161,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <?php if (!empty($errors)): ?>
                     <div style="background:#fde8e8; color:#c0392b; padding:15px; border-radius:6px; margin-bottom:20px;">
                         <strong>Please fix these errors:</strong><br>
-                        <?php echo implode('<br>• ', array_map('htmlspecialchars', $errors)); ?>
+                        • <?php echo implode('<br>• ', array_map('htmlspecialchars', $errors)); ?>
                     </div>
                 <?php endif; ?>
 
@@ -150,181 +169,161 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <p>Do you agree not to abandon or mistreat the dog?</p>
                     <label><input type="radio" name="q1" value="Yes" <?php echo isset($_POST['q1']) && $_POST['q1'] === 'Yes' ? 'checked' : ''; ?> required> Yes</label>
                     <label><input type="radio" name="q1" value="No"  <?php echo isset($_POST['q1']) && $_POST['q1'] === 'No'  ? 'checked' : ''; ?>> No</label>
-                    <span class="error" id="err_q1"></span>
+                    <div class="radio-error" id="err_q1"></div>
 
                     <p>Do you agree to provide proper care, love and medical attention?</p>
                     <label><input type="radio" name="q2" value="Yes" <?php echo isset($_POST['q2']) && $_POST['q2'] === 'Yes' ? 'checked' : ''; ?> required> Yes</label>
                     <label><input type="radio" name="q2" value="No"  <?php echo isset($_POST['q2']) && $_POST['q2'] === 'No'  ? 'checked' : ''; ?>> No</label>
-                    <span class="error" id="err_q2"></span>
+                    <div class="radio-error" id="err_q2"></div>
 
                     <p>Are you willing to train the dog patiently?</p>
                     <label><input type="radio" name="q3" value="Yes" <?php echo isset($_POST['q3']) && $_POST['q3'] === 'Yes' ? 'checked' : ''; ?> required> Yes</label>
                     <label><input type="radio" name="q3" value="No"  <?php echo isset($_POST['q3']) && $_POST['q3'] === 'No'  ? 'checked' : ''; ?>> No</label>
-                    <span class="error" id="err_q3"></span>
+                    <div class="radio-error" id="err_q3"></div>
 
                     <p>Is your home fenced or suitable for a dog?</p>
                     <label><input type="radio" name="q4" value="Yes" <?php echo isset($_POST['q4']) && $_POST['q4'] === 'Yes' ? 'checked' : ''; ?> required> Yes</label>
                     <label><input type="radio" name="q4" value="No"  <?php echo isset($_POST['q4']) && $_POST['q4'] === 'No'  ? 'checked' : ''; ?>> No</label>
-                    <span class="error" id="err_q4"></span>
+                    <div class="radio-error" id="err_q4"></div>
 
                     <label class="field">How many people live in your household?
-                        <span class="error" id="err_household"></span>
                         <input type="number" name="household" min="1" placeholder="Enter number" 
                                value="<?php echo htmlspecialchars($_POST['household'] ?? ''); ?>" required>
+                        <span class="error" id="err_household"></span>
                     </label>
 
                     <label class="field">Are there children?
-                        <span class="error" id="err_children"></span>
                         <select name="children" required>
                             <option value="">Select...</option>
                             <option value="Yes" <?php echo isset($_POST['children']) && $_POST['children'] === 'Yes' ? 'selected' : ''; ?>>Yes</option>
                             <option value="No"  <?php echo isset($_POST['children']) && $_POST['children'] === 'No'  ? 'selected' : ''; ?>>No</option>
                         </select>
+                        <span class="error" id="err_children"></span>
                     </label>
 
                     <label class="field full">Have you owned a dog before?
-                        <span class="error" id="err_prev_dog"></span>
                         <select name="prev_dog" required>
                             <option value="">Select...</option>
                             <option value="Yes" <?php echo isset($_POST['prev_dog']) && $_POST['prev_dog'] === 'Yes' ? 'selected' : ''; ?>>Yes</option>
                             <option value="No"  <?php echo isset($_POST['prev_dog']) && $_POST['prev_dog'] === 'No'  ? 'selected' : ''; ?>>No</option>
                         </select>
+                        <span class="error" id="err_prev_dog"></span>
                     </label>
 
                     <label class="field full">Do you currently have other pets?
-                        <span class="error" id="err_other_pets"></span>
                         <textarea name="other_pets" placeholder="Specify type and number" required><?php echo htmlspecialchars($_POST['other_pets'] ?? ''); ?></textarea>
+                        <span class="error" id="err_other_pets"></span>
                     </label>
 
                     <label class="field full">Who will be the primary caregiver for the dog?
-                        <span class="error" id="err_caregiver"></span>
                         <input type="text" name="caregiver" placeholder="Enter your answer" 
                                value="<?php echo htmlspecialchars($_POST['caregiver'] ?? ''); ?>" required>
+                        <span class="error" id="err_caregiver"></span>
                     </label>
 
                     <label class="field full">What would you do if the dog becomes seriously ill?
-                        <span class="error" id="err_illness"></span>
                         <textarea name="illness" placeholder="Enter your answer" required><?php echo htmlspecialchars($_POST['illness'] ?? ''); ?></textarea>
+                        <span class="error" id="err_illness"></span>
                     </label>
 
                     <label class="field full">Why do you want to adopt this pet?
-                        <span class="error" id="err_reason"></span>
                         <textarea name="reason" placeholder="Enter your answer" required><?php echo htmlspecialchars($_POST['reason'] ?? ''); ?></textarea>
+                        <span class="error" id="err_reason"></span>
                     </label>
 
                     <label class="field full">Do you want to adopt this pet?
-                        <span class="error" id="err_final_decision"></span>
                         <select name="final_decision" required>
                             <option value="">Select...</option>
                             <option value="Yes" <?php echo isset($_POST['final_decision']) && $_POST['final_decision'] === 'Yes' ? 'selected' : ''; ?>>Yes</option>
                             <option value="No"  <?php echo isset($_POST['final_decision']) && $_POST['final_decision'] === 'No'  ? 'selected' : ''; ?>>No</option>
                         </select>
+                        <span class="error" id="err_final_decision"></span>
+                        <div id="thankyou-msg">Thank you for your enquiry! We appreciate your interest in our rescued dogs. 🐾</div>
                     </label>
 
                     <div class="submit-wrap">
-                        <button class="login2" type="submit" id="submitBtn">Submit</button>
+                        <button class="login2" type="submit" id="submitBtn">Submit Application</button>
                     </div>
                 </form>
             <?php endif; ?>
-
-            <div id="successMessage" style="display:<?php echo $success ? 'block' : 'none'; ?>; text-align:center; padding:40px 20px;">
-                <div style="background-color: #4CAF50; color: white; padding: 30px; border-radius: 8px; margin-top: 20px;">
-                    <h2 style="margin: 0 0 10px 0;">✓ Form Submitted Successfully!</h2>
-                    <p style="margin: 10px 0; font-size: 16px;">
-                        Thank you for your adoption application for <?php echo htmlspecialchars($dog_name); ?>.<br>
-                        We will review your information and get back to you soon.
-                    </p>
-                    <button onclick="location.href='<?php echo htmlspecialchars($home_link); ?>'" 
-                            style="margin-top: 20px; padding: 10px 20px; background-color: white; color: #4CAF50; border: none; border-radius: 4px; cursor: pointer; font-weight: bold;">
-                        Return Home
-                    </button>
-                </div>
-            </div>
-
         </article>
     </main>
 
     <script>
-        // Client-side validation + PREVENT DOUBLE SUBMISSION
+    document.addEventListener('DOMContentLoaded', function() {
         const form = document.getElementById('adoptForm');
+        if (!form) return;
+
         const submitBtn = document.getElementById('submitBtn');
+        const thankyouMsg = document.getElementById('thankyou-msg');
 
-        if (form) {
-            form.addEventListener('submit', function(event) {
-                // Prevent default first so we can validate
-                event.preventDefault();
+        form.addEventListener('submit', function(event) {
+            let hasError = false;
+            let firstInvalid = null;
 
-                let isValid = true;
+            // Clear previous messages
+            thankyouMsg.style.display = 'none';
+            document.querySelectorAll('.error, .radio-error').forEach(el => el.textContent = '');
 
-                // Validate radio buttons
-                const questions = ['q1', 'q2', 'q3', 'q4'];
-                questions.forEach(q => {
-                    const checked = document.querySelector(`input[name="${q}"]:checked`);
-                    const errorEl = document.getElementById(`err_${q}`);
-                    if (!checked) {
-                        isValid = false;
-                        if (errorEl) errorEl.textContent = 'This field is required';
-                    } else {
-                        if (errorEl) errorEl.textContent = '';
-                    }
-                });
-
-                // Validate text/number inputs
-                const inputs = document.querySelectorAll('input[type="text"], input[type="number"]');
-                inputs.forEach(input => {
-                    if (input.value.trim() === '') {
-                        isValid = false;
-                        const errorEl = input.parentElement.querySelector('.error') || input.parentElement.parentElement.querySelector('.error');
-                        if (errorEl) errorEl.textContent = 'This field is required';
-                    } else {
-                        const errorEl = input.parentElement.querySelector('.error') || input.parentElement.parentElement.querySelector('.error');
-                        if (errorEl) errorEl.textContent = '';
-                    }
-                });
-
-                // Validate selects
-                const selects = document.querySelectorAll('select');
-                selects.forEach(select => {
-                    if (select.value === '') {
-                        isValid = false;
-                        const errorEl = select.parentElement.querySelector('.error') || select.parentElement.parentElement.querySelector('.error');
-                        if (errorEl) errorEl.textContent = 'Please select an option';
-                    } else {
-                        const errorEl = select.parentElement.querySelector('.error') || select.parentElement.parentElement.querySelector('.error');
-                        if (errorEl) errorEl.textContent = '';
-                    }
-                });
-
-                // Validate textareas
-                const textareas = document.querySelectorAll('textarea');
-                textareas.forEach(textarea => {
-                    if (textarea.value.trim() === '') {
-                        isValid = false;
-                        const errorEl = textarea.parentElement.querySelector('.error') || textarea.parentElement.parentElement.querySelector('.error');
-                        if (errorEl) errorEl.textContent = 'This field is required';
-                    } else {
-                        const errorEl = textarea.parentElement.querySelector('.error') || textarea.parentElement.parentElement.querySelector('.error');
-                        if (errorEl) errorEl.textContent = '';
-                    }
-                });
-
-                if (!isValid) {
-                    alert('Please fill in all required fields');
-                    return;
+            // 1. Radio buttons q1–q4
+            ['q1','q2','q3','q4'].forEach(name => {
+                const selected = document.querySelector(`input[name="${name}"]:checked`);
+                if (!selected) {
+                    hasError = true;
+                    const errEl = document.getElementById(`err_${name}`);
+                    if (errEl) errEl.textContent = 'Please select an option';
+                    if (!firstInvalid) firstInvalid = document.querySelector(`input[name="${name}"]`);
                 }
-
-                // === PREVENT DOUBLE SUBMISSION ===
-                if (submitBtn.disabled) {
-                    return; // already submitting
-                }
-                submitBtn.disabled = true;
-                submitBtn.textContent = 'Submitting... Please wait';
-                submitBtn.style.cursor = 'not-allowed';
-
-                // Now submit the form
-                this.submit();
             });
-        }
+
+            // 2. Required inputs/selects/textareas
+            form.querySelectorAll('[required]').forEach(field => {
+                if (field.tagName === 'INPUT' || field.tagName === 'TEXTAREA' || field.tagName === 'SELECT') {
+                    if (!field.value.trim()) {
+                        hasError = true;
+                        const errId = `err_${field.name}`;
+                        const errEl = document.getElementById(errId);
+                        if (errEl) errEl.textContent = 'This field is required';
+                        field.classList.add('error-field');
+                        if (!firstInvalid) firstInvalid = field;
+                    } else {
+                        field.classList.remove('error-field');
+                    }
+                }
+            });
+
+            // 3. Final decision: special handling
+            const finalSelect = document.querySelector('select[name="final_decision"]');
+            if (finalSelect.value === '') {
+                hasError = true;
+                document.getElementById('err_final_decision').textContent = 'Please select an option';
+                if (!firstInvalid) firstInvalid = finalSelect;
+            } else if (finalSelect.value === 'No') {
+                hasError = true;
+                thankyouMsg.style.display = 'block';
+                thankyouMsg.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+
+            if (hasError) {
+                event.preventDefault();
+                if (firstInvalid) firstInvalid.focus();
+                return;
+            }
+
+            // All good → submit
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+        });
+
+        // Clear errors on input
+        form.querySelectorAll('input, select, textarea').forEach(el => {
+            el.addEventListener('input', () => {
+                el.classList.remove('error-field');
+                const errEl = document.getElementById(`err_${el.name}`);
+                if (errEl) errEl.textContent = '';
+            });
+        });
+    });
     </script>
 </body>
 </html>

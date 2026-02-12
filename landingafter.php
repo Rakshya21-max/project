@@ -114,9 +114,9 @@ $user['profile_photo'] = null; // Placeholder until column is added
 				<aside class="who">
 					<h3>Who We Are?</h3>
 					<ul class="list-small">
-						<li>★ Compassion in action</li>
-						<li>★ Voice for strays</li>
-						<li>★ Hope for paws</li>
+						<li type="none">★ Compassion in action</li>
+						<li type="none">★ Voice for strays</li>
+						<li type="none">★ Hope for paws</li>
 					</ul>
 					
 				</aside>
@@ -152,42 +152,54 @@ $user['profile_photo'] = null; // Placeholder until column is added
 				</div>
 			</section>
 
-			<!-- AVAILABLE FOR ADOPTION -->
-			<section class="available container">
-				<h2>Available for Adoption</h2>
-				<p class="muted center">These lovely dogs are waiting for their forever homes. Each one has been rescued, health-checked, and is ready to bring joy to your family.</p>
-					<div class="adoption-row">
-						<div class="adopt-card">
-							<div class="img-box img-rect" aria-label="image placeholder"><img src="photos/5.jpg" alt="photo"></div>
-							<div class="adopt-body">
-								<h4>Bella</h4>
-								<p class="small">7 months • Beagle Mix</p>
-								<button class="btn primary">Meet Bella</button>
-							</div>
-						</div>
-						<div class="adopt-card">
-							<div class="img-box img-rect" aria-label="image placeholder"><img src="photos/6.jpg" alt="photo"></div>
-							<div class="adopt-body">
-								<h4>Charlie</h4>
-								<p class="small">5 months • Labrador Mix</p>
-								<button class="btn primary">Meet Charlie</button>
-							</div>
-						</div>
-						<div class="adopt-card">
-							<div class="img-box img-rect" aria-label="image placeholder"><img src="photos/7.jpg" alt="photo"></div>
-							<div class="adopt-body">
-								<h4>Rocky</h4>
-								<p class="small">7 months • Husky Mix</p>
-								<button class="btn primary">Meet Rocky</button>
-							</div>
-						</div>
-					</div>
-				<div class="view-all">
-					<a href="galleryafter.php">
-					<button class="btn outline">View all dogs →</button>
-					</a>
-				</div>
-			</section>
+<!-- AVAILABLE FOR ADOPTION - dynamic version (same query, different presentation) -->
+<section class="available container">
+    <h2>Available for Adoption</h2>
+    <p class="muted center">These lovely dogs are waiting for their forever homes. Each one has been rescued, health-checked, and is ready to bring joy to your family.</p>
+    <div class="adoption-row">
+        <?php
+        // Reuse the same result or run again if needed
+        $available_sql = "
+            SELECT id, picture, name, breed, age 
+            FROM reports 
+            WHERE LOWER(TRIM(status)) = 'ready for adoption' 
+            ORDER BY id DESC 
+            LIMIT 3
+        ";
+        $available_result = $conn->query($available_sql);
+
+        if ($available_result && $available_result->num_rows > 0):
+            while ($dog = $available_result->fetch_assoc()):
+        ?>
+            <div class="adopt-card">
+                <div class="img-box img-rect">
+                    <img src="uploads/<?php echo htmlspecialchars($dog['picture']); ?>" 
+                         alt="<?php echo htmlspecialchars($dog['name'] ?: 'Adoptable dog'); ?>">
+                </div>
+                <div class="adopt-body">
+                    <h4><?php echo htmlspecialchars($dog['name'] ?: 'Unnamed Friend'); ?></h4>
+                    <p class="small">
+                        <?php echo htmlspecialchars($dog['age'] ?: 'Age unknown'); ?> • 
+                        <?php echo htmlspecialchars($dog['breed'] ?: 'Mixed Breed'); ?>
+                    </p>
+                        <button class="btn primary">Meet </button>
+                </div>
+            </div>
+        <?php
+            endwhile;
+        else:
+        ?>
+            <p style="text-align:center; grid-column:1/-1; color:#555;">
+                No dogs available right now — new rescues coming soon!
+            </p>
+        <?php endif; ?>
+    </div>
+    <div class="view-all">
+        <a href="galleryafter.php">
+            <button class="btn outline">View all dogs →</button>
+        </a>
+    </div>
+</section>
 
 			<!-- CTA + Footer area -->
 			<section class="final-cta container cta-row">

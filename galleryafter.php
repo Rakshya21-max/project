@@ -181,96 +181,113 @@ $adopted_result = $conn->query($adopted_sql);
             <div class="cards-grid">
 
                 <!-- AVAILABLE DOGS -->
-                <?php if ($available_result && $available_result->num_rows > 0): ?>
-                    <?php while ($dog = $available_result->fetch_assoc()): ?>
-                        <article class="card available">
-                            <div class="card-media">
-                                <img 
-                                    src="uploads/<?php echo htmlspecialchars($dog['picture']); ?>" 
-                                    alt="<?php echo htmlspecialchars($dog['name'] ?: 'Street dog ready for adoption'); ?>"
-                                    class="dog-full-img"
-                                    loading="lazy"
-                                >
-                                <button class="fav">♡</button>
-                            </div>
-                            <div class="card-body">
-                                <h4><?php 
-                                    echo htmlspecialchars(
-                                        $dog['name'] ?: 
-                                        ($dog['breed'] ? $dog['breed'] . ' Friend' : 'Rescued Street Friend')
-                                    ); 
-                                ?></h4>
-                                
-                                <ul class="meta">
-                                    <?php if (!empty($dog['age'])): ?><li><strong>Age:</strong> <?php echo htmlspecialchars($dog['age']); ?></li><?php endif; ?>
-                                    <?php if (!empty($dog['breed'])): ?><li><strong>Breed:</strong> <?php echo htmlspecialchars($dog['breed']); ?></li><?php endif; ?>
-                                    <?php if (!empty($dog['gender'])): ?><li><strong>Gender:</strong> <?php echo ucfirst(htmlspecialchars($dog['gender'])); ?></li><?php endif; ?>
-                                    <?php if (!empty($dog['size'])): ?><li><strong>Size:</strong> <?php echo ucfirst(htmlspecialchars($dog['size'])); ?></li><?php endif; ?>
-                                </ul>
+    <?php
+// Fetch both Ready and In Adoption Process dogs
+$available_sql = "
+    SELECT id, picture, name, breed, age, gender, size, status
+    FROM reports 
+    WHERE status IN ('Ready for adoption', 'In Adoption Process')
+    ORDER BY id DESC
+";
+$available_result = $conn->query($available_sql);
 
-                                <div class="card-actions">
-                                    <a href="adopt.php?dog_id=<?php echo $dog['id']; ?>">
-                                        <button class="btn primary">Adopt Me 🐾</button>
-                                    </a>
-                                    <a href="user-dog-detail.php?id=<?php echo $dog['id']; ?>">
-                                        <button class="btn outline">View Details</button>
-                                    </a>
-                                </div>
-                            </div>
-                        </article>
-                    <?php endwhile; ?>
-                <?php else: ?>
-                    <div class="no-dogs-message">
-                        <h3>No dogs available for adoption right now</h3>
-                        <p>Check back soon — new friends are rescued every week in Kathmandu!</p>
-                    </div>
-                <?php endif; ?>
+if ($available_result && $available_result->num_rows > 0): ?>
+    <?php while ($dog = $available_result->fetch_assoc()): ?>
+        <article class="card available">
+            <div class="card-media">
+                <img 
+                    src="uploads/<?php echo htmlspecialchars($dog['picture']); ?>" 
+                    alt="<?php echo htmlspecialchars($dog['name'] ?: 'Street dog ready for adoption'); ?>"
+                    class="dog-full-img"
+                    loading="lazy"
+                >
+                <button class="fav">♡</button>
+            </div>
+            <div class="card-body">
+                <h4><?php 
+                    echo htmlspecialchars(
+                        $dog['name'] ?: 
+                        ($dog['breed'] ? $dog['breed'] . ' Friend' : 'Rescued Street Friend')
+                    ); 
+                ?></h4>
+                
+                <ul class="meta">
+                    <?php if (!empty($dog['age'])): ?><li><strong>Age:</strong> <?php echo htmlspecialchars($dog['age']); ?></li><?php endif; ?>
+                    <?php if (!empty($dog['breed'])): ?><li><strong>Breed:</strong> <?php echo htmlspecialchars($dog['breed']); ?></li><?php endif; ?>
+                    <?php if (!empty($dog['gender'])): ?><li><strong>Gender:</strong> <?php echo ucfirst(htmlspecialchars($dog['gender'])); ?></li><?php endif; ?>
+                    <?php if (!empty($dog['size'])): ?><li><strong>Size:</strong> <?php echo ucfirst(htmlspecialchars($dog['size'])); ?></li><?php endif; ?>
+                </ul>
 
-                <!-- RECENTLY ADOPTED SECTION -->
-                <?php if ($adopted_result && $adopted_result->num_rows > 0): ?>
-                    <div class="section-title">
-                        Recently Adopted Happy Tails 🏡❤️
-                    </div>
-
-                    <?php while ($dog = $adopted_result->fetch_assoc()): ?>
-                        <article class="card adopted">
-                            <div class="card-media">
-                                <img 
-                                    src="uploads/<?php echo htmlspecialchars($dog['picture']); ?>" 
-                                    alt="<?php echo htmlspecialchars($dog['name'] ?: 'Adopted street dog'); ?>"
-                                    class="dog-full-img"
-                                    loading="lazy"
-                                >
-                                <button class="fav">♡</button>
-                                <div class="adopted-badge">Adopted!</div>
-                            </div>
-                            <div class="card-body">
-                                <h4><?php 
-                                    echo htmlspecialchars(
-                                        $dog['name'] ?: 
-                                        ($dog['breed'] ? $dog['breed'] . ' Friend' : 'Happy Adopted Friend')
-                                    ); 
-                                ?></h4>
-                                
-                                <ul class="meta">
-                                    <?php if (!empty($dog['breed'])): ?><li><strong>Breed:</strong> <?php echo htmlspecialchars($dog['breed']); ?></li><?php endif; ?>
-                                    <?php if (!empty($dog['age'])): ?><li><strong>Age:</strong> <?php echo htmlspecialchars($dog['age']); ?></li><?php endif; ?>
-                                </ul>
-
-                                <div class="card-actions">
-                                    <a href="user-dog-detail.php?id=<?php echo $dog['id']; ?>">
-                                        <button class="btn outline">View Story</button>
-                                    </a>
-                                </div>
-                            </div>
-                        </article>
-                    <?php endwhile; ?>
-                <?php endif; ?>
-
-                <div class="no-results" id="noResults">
-                    <h3>No matching dogs found</h3>
-                    <p>Try different name or breed keywords 🐶</p>
+                <div class="card-actions">
+                    <?php if ($dog['status'] === 'Ready for adoption'): ?>
+                        <a href="adopt.php?dog_id=<?php echo $dog['id']; ?>">
+                            <button class="btn primary">Adopt Me 🐾</button>
+                        </a>
+                    <?php else: ?>
+                        <button class="btn primary" style="background:#f39c12; opacity:0.8; cursor:not-allowed;" disabled>
+                            Adoption in Process
+                        </button>
+                    <?php endif; ?>
+                    
+                    <a href="user-dog-detail.php?id=<?php echo $dog['id']; ?>">
+                        <button class="btn outline">View Details</button>
+                    </a>
                 </div>
+            </div>
+        </article>
+    <?php endwhile; ?>
+<?php else: ?>
+    <div class="no-dogs-message">
+        <h3>No dogs available for adoption right now</h3>
+        <p>Check back soon — new friends are rescued every week in Kathmandu!</p>
+    </div>
+<?php endif; ?>
+
+<!-- RECENTLY ADOPTED SECTION (unchanged) -->
+<?php if ($adopted_result && $adopted_result->num_rows > 0): ?>
+    <div class="section-title">
+        Recently Adopted Happy Tails 🏡❤️
+    </div>
+
+    <?php while ($dog = $adopted_result->fetch_assoc()): ?>
+        <article class="card adopted">
+            <div class="card-media">
+                <img 
+                    src="uploads/<?php echo htmlspecialchars($dog['picture']); ?>" 
+                    alt="<?php echo htmlspecialchars($dog['name'] ?: 'Adopted street dog'); ?>"
+                    class="dog-full-img"
+                    loading="lazy"
+                >
+                <button class="fav">♡</button>
+                <div class="adopted-badge">Adopted!</div>
+            </div>
+            <div class="card-body">
+                <h4><?php 
+                    echo htmlspecialchars(
+                        $dog['name'] ?: 
+                        ($dog['breed'] ? $dog['breed'] . ' Friend' : 'Happy Adopted Friend')
+                    ); 
+                ?></h4>
+                
+                <ul class="meta">
+                    <?php if (!empty($dog['breed'])): ?><li><strong>Breed:</strong> <?php echo htmlspecialchars($dog['breed']); ?></li><?php endif; ?>
+                    <?php if (!empty($dog['age'])): ?><li><strong>Age:</strong> <?php echo htmlspecialchars($dog['age']); ?></li><?php endif; ?>
+                </ul>
+
+                <div class="card-actions">
+                    <a href="user-dog-detail.php?id=<?php echo $dog['id']; ?>">
+                        <button class="btn outline">View Story</button>
+                    </a>
+                </div>
+            </div>
+        </article>
+    <?php endwhile; ?>
+<?php endif; ?>
+
+<div class="no-results" id="noResults">
+    <h3>No matching dogs found</h3>
+    <p>Try different name or breed keywords 🐶</p>
+</div>
 
             </div>
         </section>

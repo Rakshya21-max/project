@@ -93,9 +93,9 @@ if (!$conn) {
 				<aside class="who">
 					<h3>Who We Are?</h3>
 					<ul class="list-small">
-						<li>★ Compassion in action</li>
-						<li>★ Voice for strays</li>
-						<li>★ Hope for paws</li>
+						<li type="none">★ Compassion in action</li>
+						<li type="none">★ Voice for strays</li>
+						<li type="none">★ Hope for paws</li>
 					</ul>
 					
 				</aside>
@@ -172,9 +172,7 @@ if (!$conn) {
                         <?php echo htmlspecialchars($dog['age'] ?: 'Age unknown'); ?> • 
                         <?php echo htmlspecialchars($dog['breed'] ?: 'Mixed Breed'); ?>
                     </p>
-                    <a href="dog-detail.php?id=<?php echo $dog['id']; ?>">
-                        <button class="btn primary">Meet <?php echo htmlspecialchars($dog['name'] ?: 'this dog'); ?></button>
-                    </a>
+                        <button class="btn primary">Meet </button>
                 </div>
             </div>
         <?php

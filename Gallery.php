@@ -92,7 +92,12 @@ $profile_photo = $user['profile_photo'] ?? 'profile.jpg';
         <div class="cards-grid">
           <?php
           // Fetch dogs available for adoption
-          $dogs_sql = "SELECT id, picture, location, description FROM reports WHERE status = 'Ready for adoption' ORDER BY id DESC";
+         $dogs_sql = "
+    SELECT id, picture, name, breed, age, gender, size, status
+    FROM reports 
+    WHERE status IN ('Ready for adoption', 'In Adoption Process')
+    ORDER BY id DESC
+";
           $dogs_result = $conn->query($dogs_sql);
 
           if ($dogs_result && $dogs_result->num_rows > 0) {
@@ -112,7 +117,7 @@ $profile_photo = $user['profile_photo'] ?? 'profile.jpg';
               echo '</ul>';
               echo '<div class="card-actions">';
               echo '<a href="adopt.php?dog_id=' . $dog['id'] . '"><button class="btn primary">Adopt Me</button></a>';
-              echo '<a href="Detail.php?dog_id=' . $dog['id'] . '"><button class="btn outline">View Details</button></a>';
+              echo '<a href="user-dog-detail.php?dog_id=' . $dog['id'] . '"><button class="btn outline">View Details</button></a>';
               echo '</div>';
               echo '</div>';
               echo '</article>';
