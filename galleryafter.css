@@ -169,3 +169,56 @@ html,body{margin:0;font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',
 .profile-wrapper:hover .profile-dropdown {
 	display: block;
 }
+/* ==================== NOTIFICATION ICON ==================== */
+.notification-wrapper {
+    position: relative;
+    margin-right: 16px;
+    cursor: pointer;
+}
+
+.notification-icon {
+    font-size: 26px;
+    position: relative;
+    padding: 6px 10px;
+    border-radius: 50%;
+    transition: all 0.2s ease;
+}
+
+.notification-icon:hover {
+    background: rgba(255, 255, 255, 0.25);
+    transform: scale(1.08);
+}
+
+.notification-count {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+    background: #ff3b30;
+    color: white;
+    font-size: 11px;
+    font-weight: bold;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 5px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+/* Optional: Notification Dropdown (for future use) */
+.notification-dropdown {
+    position: absolute;
+    top: 58px;
+    right: 0;
+    background: white;
+    border-radius: 12px;
+    width: 340px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+    display: none;
+    z-index: 1100;
+    padding: 10px 0;
+    max-height: 420px;
+    overflow-y: auto;
+}

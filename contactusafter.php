@@ -43,22 +43,28 @@ $user['profile_photo'] = null; // Placeholder until column is added
 					<a class="nav-link" href="aboutusafter.php">About Us</a>
 					<a class="nav-link active" href="#">Contact US</a>
 				</nav>
-				<div class="nav-actions profile-wrapper">
-	<div class="profile-icon" onclick="toggleDropdown()">
-		<img src="profile.jpg" alt="Profile">
-	</div>
+				<div class="nav-actions">
+    <!-- Notification Icon -->
 
-	<div class="profile-dropdown" id="profileDropdown">
-		<p class="profile-name">Hello, <?php echo htmlspecialchars($full_name); ?></p>
-		<a href="profile.php">View Profile</a>
-		<a href="change-email.php">Change Email</a>
-		<a href="change-password.php">Change Password</a>
-		<hr>
-		<a href="logout.php" class="logout">Logout</a>
-	</div>
+
+    <!-- Profile with Dropdown -->
+    <div class="profile-wrapper">
+        <div class="profile-icon" onclick="toggleDropdown()">
+            <img src="profile.jpg" alt="Profile">
+        </div>
+
+        <div class="profile-dropdown" id="profileDropdown">
+            <p class="profile-name">Hello, <?php echo htmlspecialchars($full_name); ?></p>
+            
+            <a href="profile.php">View Profile</a>
+            <a href="my-adoptions.php">My Adoption Forms</a>   <!-- ← New Link -->
+            <a href="change-email.php">Change Email</a>
+            <a href="change-password.php">Change Password</a>
+            <hr>
+            <a href="logout.php" class="logout">Logout</a>
+        </div>
+    </div>
 </div>
-
-			</div>
 		</header>
 
     <div class="hero">
@@ -270,6 +276,32 @@ $user['profile_photo'] = null; // Placeholder until column is added
 					document.getElementById('err_message').textContent = '';
 				}
 			});
+			function showNotifications() {
+    fetch('get_notifications.php')
+        .then(r => r.json())
+        .then(data => {
+            if (data.length === 0) {
+                alert("🛎️ No new notifications");
+                return;
+            }
+            let msg = "🛎️ Notifications:\n\n";
+            data.forEach(n => msg += "• " + n.message + "\n\n");
+            alert(msg);
+        });
+}
+
+// Update count on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const userEmail = "<?php echo $_SESSION['user_email'] ?? ''; ?>";   // Make sure you have user_email in session
+    if (userEmail) {
+        fetch(`get_notifications.php?email=${encodeURIComponent(userEmail)}&count_only=1`)
+            .then(r => r.text())
+            .then(count => {
+                document.getElementById('notifCount').textContent = count;
+            });
+    }
+});
 		</script>
+		
   </body>
 </html>

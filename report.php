@@ -2,11 +2,16 @@
 session_start();
 include 'db.php';
 
-
-
-// Initialize variables at the top to avoid undefined warnings
+// Initialize variables
 $success = false;
 $error   = '';
+
+// Get the previous page safely (fallback logic)
+$previous_page = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : 'landingafter.php';
+
+// Ensure we only allow safe previous pages
+$allowed_pages = ['landingpage.php', 'landingafter.php', 'galleryafter.php', 'aboutusafter.php'];
+$go_back_url = in_array(basename($previous_page), $allowed_pages) ? $previous_page : 'landingafter.php';
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $location    = trim($_POST["location"] ?? '');
@@ -63,32 +68,111 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Report a Street Dog - RescueTails</title>
     <style>
-        body { font-family: Arial, sans-serif; background: #f8f9fa; margin: 0; padding: 20px; }
-        .container { max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-        h1 { text-align: center; color: #2f6b4f; }
-        .success { background: #d4edda; color: #155724; padding: 20px; border-radius: 8px; text-align: center; margin: 20px 0; }
-        .error { background: #f8d7da; color: #721c24; padding: 20px; border-radius: 8px; margin: 20px 0; }
-        label { display: block; margin: 12px 0 6px; font-weight: bold; color: #333; }
-        input, textarea { width: 100%; padding: 10px; margin-bottom: 15px; border: 1px solid #ccc; border-radius: 6px; box-sizing: border-box; }
-        textarea { height: 120px; }
-        button { background: #2f6b4f; color: white; padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; width: 100%; font-size: 1.1rem; }
+        body { 
+            font-family: 'Poppins', Arial, sans-serif; 
+            background: #f8f9fa; 
+            margin: 0; 
+            padding: 20px; 
+        }
+        .container { 
+            max-width: 620px; 
+            margin: 40px auto; 
+            background: white; 
+            padding: 40px; 
+            border-radius: 20px; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1); 
+        }
+        h1 { 
+            text-align: center; 
+            color: #2f6b4f; 
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #555;
+            margin-bottom: 30px;
+        }
+        .success { 
+            background: #d4edda; 
+            color: #155724; 
+            padding: 25px; 
+            border-radius: 12px; 
+            text-align: center; 
+            margin: 20px 0; 
+        }
+        .error { 
+            background: #f8d7da; 
+            color: #721c24; 
+            padding: 20px; 
+            border-radius: 12px; 
+            margin: 20px 0; 
+        }
+        label { 
+            display: block; 
+            margin: 18px 0 8px; 
+            font-weight: 600; 
+            color: #333; 
+        }
+        input, textarea { 
+            width: 100%; 
+            padding: 14px; 
+            margin-bottom: 20px; 
+            border: 1px solid #ccc; 
+            border-radius: 10px; 
+            box-sizing: border-box; 
+            font-size: 16px;
+        }
+        textarea { height: 130px; }
+        button { 
+            background: #2f6b4f; 
+            color: white; 
+            padding: 14px 24px; 
+            border: none; 
+            border-radius: 10px; 
+            cursor: pointer; 
+            width: 100%; 
+            font-size: 17px; 
+            font-weight: 600;
+        }
         button:hover { background: #265c3f; }
-        .back { display: block; text-align: center; margin-top: 20px; color: #2f6b4f; text-decoration: none; }
+
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: #2f6b4f;
+            color: white;
+            border: none;
+            border-radius: 50px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-bottom: 25px;
+            text-decoration: none;
+        }
+        .back-btn:hover {
+            background: #265c3f;
+            transform: translateX(-4px);
+        }
     </style>
 </head>
 <body>
 
 <div class="container">
+
+    <!-- Back Button -->
+    <a href="<?php echo htmlspecialchars($go_back_url); ?>" class="back-btn">
+        ← Back to Previous Page
+    </a>
+
     <h1>Report a Street Dog</h1>
-    <p style="text-align:center; color:#555;">Help us rescue a street dog in Kathmandu</p>
+    <p class="subtitle">Help us rescue a street dog in Kathmandu</p>
 
     <?php if ($success): ?>
         <div class="success">
-            <h2>Success!</h2>
-            <p>The dog has been reported successfully.<br>
-               Our rescue team will review it soon.</p>
-            <a href="report.php" style="color:#2f6b4f;">Report Another Dog</a> | 
-            <a href="galleryafter.php" style="color:#2f6b4f;">View Gallery</a>
+            <h2>✅ Report Submitted Successfully!</h2>
+            <p>Our rescue team will review it soon and contact you if needed.</p>
+            <a href="report.php" style="color:#2f6b4f; font-weight:600;">Report Another Dog</a>
         </div>
     <?php endif; ?>
 
@@ -99,11 +183,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         </div>
     <?php endif; ?>
 
+    <?php if (!$success): ?>
     <form method="post" enctype="multipart/form-data">
         <label for="location">Location where the dog was seen:</label>
         <input type="text" id="location" name="location" required value="<?= htmlspecialchars($_POST['location'] ?? '') ?>">
 
-        <label for="description">Description (condition, color, size estimate, behavior...):</label>
+        <label for="description">Description (condition, color, size, behavior...):</label>
         <textarea id="description" name="description" required><?= htmlspecialchars($_POST['description'] ?? '') ?></textarea>
 
         <label for="email">Your Email (for follow-up):</label>
@@ -114,8 +199,8 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <button type="submit">Submit Report</button>
     </form>
+    <?php endif; ?>
 
-   
 </div>
 
 </body>

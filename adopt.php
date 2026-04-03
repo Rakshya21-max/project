@@ -127,13 +127,33 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             border-radius: 6px;
             text-align: center;
         }
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 20px;
+            background: #2f6b4f;
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 16px;
+            font-weight: 500;
+            margin-bottom: 20px;
+            transition: all 0.3s;
+        }
+        .back-btn:hover {
+            background: #265c3f;
+            transform: translateX(-5px);
+        }
     </style>
 </head>
 <body>
     <main class="page">
         <article class="adopt-card">
             <a href="<?php echo htmlspecialchars($home_link); ?>">
-                <button class="back" aria-label="back">←</button>
+                <a href="galleryafter.php" class="back-btn">
+                ← Back to Gallery
+            </a>
             </a>
             <div class="card-top">
                 <div class="logo">🐾</div>

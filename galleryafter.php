@@ -149,20 +149,29 @@ $adopted_result = $conn->query($adopted_sql);
                 <a class="nav-link" href="ContactUsafter.php">Contact Us</a>
             </nav>
 
-            <div class="nav-actions profile-wrapper">
-                <div class="profile-icon" onclick="toggleDropdown()">
-                    <img src="<?php echo htmlspecialchars($profile_photo); ?>" alt="Profile">
-                </div>
-                <div class="profile-dropdown" id="profileDropdown">
-                    <p class="profile-name">Hello, <?php echo htmlspecialchars($full_name); ?></p>
-                    <a href="profile.php">View Profile</a>
-                    <a href="change-email.php">Change Email</a>
-                    <a href="change-password.php">Change Password</a>
-                    <hr>
-                    <a href="logout.php" class="logout">Logout</a>
-                </div>
-            </div>
+           <div class="nav-actions">
+    <!-- Notification Icon -->
+   <!-- Notification Icon -->
+
+
+    <!-- Profile with Dropdown -->
+    <div class="profile-wrapper">
+        <div class="profile-icon" onclick="toggleDropdown()">
+            <img src="profile.jpg" alt="Profile">
         </div>
+
+        <div class="profile-dropdown" id="profileDropdown">
+            <p class="profile-name">Hello, <?php echo htmlspecialchars($full_name); ?></p>
+            <a href="profile.php">View Profile</a>
+            <a href="my-adoptions.php">My Adoption Forms</a>
+            <a href="notifications.php">My Notifications</a>
+            <a href="change-email.php">Change Email</a>
+            <a href="change-password.php">Change Password</a>
+            <hr>
+            <a href="logout.php" class="logout">Logout</a>
+        </div>
+    </div>
+</div>
     </header>
 
     <main>
@@ -361,6 +370,56 @@ if ($available_result && $available_result->num_rows > 0): ?>
             });
         });
     </script>
+    <script>
+function toggleDropdown() {
+    const dropdown = document.getElementById('profileDropdown');
+    dropdown.style.display = (dropdown.style.display === 'block') ? 'none' : 'block';
+}
+
+function toggleNotifications() {
+    // For now showing alert. You can expand later to show real notifications
+    const count = document.getElementById('notifCount').textContent;
+    if (parseInt(count) > 0) {
+        alert("🛎️ You have " + count + " new notification(s)!\n\nCheck your adoption status.");
+    } else {
+        alert("🛎️ No new notifications at the moment.");
+    }
+}
+
+// Close dropdowns when clicking outside
+document.addEventListener('click', function(event) {
+    const profileWrapper = document.querySelector('.profile-wrapper');
+    if (!profileWrapper.contains(event.target)) {
+        const profileDrop = document.getElementById('profileDropdown');
+        if (profileDrop) profileDrop.style.display = 'none';
+    }
+});
+function showNotifications() {
+    fetch('get_notifications.php')
+        .then(r => r.json())
+        .then(data => {
+            if (data.length === 0) {
+                alert("🛎️ No new notifications");
+                return;
+            }
+            let msg = "🛎️ Notifications:\n\n";
+            data.forEach(n => msg += "• " + n.message + "\n\n");
+            alert(msg);
+        });
+}
+
+// Update count on page load
+document.addEventListener('DOMContentLoaded', () => {
+    const userEmail = "<?php echo $_SESSION['user_email'] ?? ''; ?>";   // Make sure you have user_email in session
+    if (userEmail) {
+        fetch(`get_notifications.php?email=${encodeURIComponent(userEmail)}&count_only=1`)
+            .then(r => r.text())
+            .then(count => {
+                document.getElementById('notifCount').textContent = count;
+            });
+    }
+});
+</script>
 </body>
 </html>
 
