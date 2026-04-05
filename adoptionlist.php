@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['application_id'])) {
         $update_dog = $conn->prepare("
             UPDATE reports 
             SET status = 'Adopted' 
-            WHERE id = (SELECT dog_id FROM adoption_applications WHERE id = ?)
+            WHERE id = (SELECT report_id FROM adoption_applications WHERE id = ?)
         ");
         $update_dog->bind_param("i", $app_id);
         $update_dog->execute();
